@@ -15,6 +15,6 @@ namespace BikeRental.Models
         [Display(Name = "Dostępność")]
         public bool Availability { get; set; }
         [Display(Name = "Zdjęcie")]
-        public Image Image { get; set; }
+        public string Image { get; set; }
     }
 }

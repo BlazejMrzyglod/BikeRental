@@ -20,6 +20,6 @@ namespace BikeRental.Models
         [Display(Name = "Opis")]
         public string Description { get; set; }
         [Display(Name = "Zdjęcie")]
-        public Image Image { get; set; }
+        public string Image { get; set; }
     }
 }

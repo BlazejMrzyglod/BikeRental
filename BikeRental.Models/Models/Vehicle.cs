@@ -19,7 +19,7 @@ namespace BikeRental.Models.Models
         public virtual Location Location { get; set; }
         public bool Availability { get; set; }
         public string Description { get; set; }
-        public Image Image { get; set; }
+        public string Image { get; set; }
         public int TypeId { get; set; }
         public virtual VehicleType Type { get; set; }
         public int ReservationId { get; set; }
