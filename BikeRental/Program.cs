@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using BikeRental.Models;
 
-List<VehicleDetailViewModel> vehiclesDetails = new List<VehicleDetailViewModel>()
+/*List<VehicleDetailViewModel> vehiclesDetails = new List<VehicleDetailViewModel>()
         {
             new VehicleDetailViewModel(){Id = 1, Manufacturer = "safdasfasf", Availability = true, Description = "fadsfdsafasdf", Location = "cdsjfbasdjf", Model = "dasfafasf", Price = 1234 },
             new VehicleDetailViewModel(){Id = 2, Manufacturer = "dwa", Availability = true, Description = "fadsfdsafasdf", Location = "cdsjfbasdjf", Model = "dasfafasf", Price = 1234 },
@@ -16,14 +16,15 @@ List<VehicleItemViewModel> vehicles = new List<VehicleItemViewModel>()
             new VehicleItemViewModel() { Id = 1, Availability = true, Name = "jeden", Price = 1234 },
             new VehicleItemViewModel() { Id = 2, Availability = true, Name = "dwa", Price = 1234 },
             new VehicleItemViewModel() { Id = 3, Availability = true, Name = "trzy", Price = 1234 },
-        };
+        };*/
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseInMemoryDatabase(connectionString));
+    options.UseInMemoryDatabase("test"));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();

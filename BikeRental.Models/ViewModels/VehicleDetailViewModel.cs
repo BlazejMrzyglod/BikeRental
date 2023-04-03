@@ -3,10 +3,10 @@ using System.Drawing;
 
 namespace BikeRental.Models
 {
-    public class VehicleDetailViewModel
+    public class VehicleDetailViewModel : IEntity<Guid>
     {
         [Display(Name="Identyfikator")]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         [Display(Name="Producent")]
         public string Manufacturer { get; set; }
         [Display(Name="Model")]

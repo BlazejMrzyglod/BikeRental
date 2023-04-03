@@ -12,12 +12,10 @@ namespace BikeRental.Data
         {
         }
 
-        public DbSet<Vehicle> Vehicles { get; set; }
+        public DbSet<VehicleItemViewModel> Vehicles { get; set; }
         public DbSet<VehicleType> VehicleTypes { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
-        public DbSet<BikeRental.Models.VehicleItemViewModel>? VehicleItemViewModel { get; set; }
-        public DbSet<BikeRental.Models.VehicleDetailViewModel>? VehicleDetailViewModel { get; set; }
 
     }
 }

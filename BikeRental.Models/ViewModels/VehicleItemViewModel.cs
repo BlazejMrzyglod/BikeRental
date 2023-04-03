@@ -4,10 +4,10 @@ using System.Xml.Linq;
 
 namespace BikeRental.Models
 {
-    public class VehicleItemViewModel
+    public class VehicleItemViewModel : IEntity<Guid>
     {
         [Display(Name = "Identyfikator")]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         [Display(Name = "Nazwa")]
         public string Name { get; set; }
         [Display(Name = "Cena")]
@@ -15,6 +15,6 @@ namespace BikeRental.Models
         [Display(Name = "Dostępność")]
         public bool Availability { get; set; }
         [Display(Name = "Zdjęcie")]
-        public string Image { get; set; }
+        public string? Image { get; set; }
     }
 }

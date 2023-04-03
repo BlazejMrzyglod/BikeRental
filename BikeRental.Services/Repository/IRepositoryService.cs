@@ -17,5 +17,6 @@ namespace BikeRental.Services.Repository
         ServiceResult Add(T entity);
         ServiceResult Delete(T entity);
         ServiceResult Edit(T entity);
+        ServiceResult Save();
     }
 }

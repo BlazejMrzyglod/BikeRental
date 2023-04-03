@@ -7,28 +7,34 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BikeRental.Data;
 using BikeRental.Models.Models;
+using BikeRental.Services.Repository;
+using BikeRental.Services.Repository.EntityFramework;
 using BikeRental.Models;
 
 namespace BikeRental.Controllers
 {
     public class VehiclesController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        
+        private readonly IRepositoryService<VehicleItemViewModel> _repository;
+
         public VehiclesController(ApplicationDbContext context)
         {
-            _context = context;
+            _repository = new RepositoryService<VehicleItemViewModel>(context);
         }
 
         // GET: Vehicles
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Vehicles.Include(v => v.Location).Include(v => v.Resrvation).Include(v => v.Type);
-            return View(await applicationDbContext.ToListAsync());
+            _repository.Add(new VehicleItemViewModel() {Id= new Guid(), Name="dasdasd", Price=12313, Availability=true});
+            _repository.Save();
+            var vehicles = _repository.GetAllRecords().AsEnumerable();
+            return vehicles != null ? 
+                          View(vehicles) :
+                          Problem("Entity set 'ApplicationDbContext.Vehicles'  is null.");
         }
 
         // GET: Vehicles/Details/5
-        public async Task<IActionResult> Details(int? id)
+      /*  public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null || _context.Vehicles == null)
             {
@@ -36,9 +42,6 @@ namespace BikeRental.Controllers
             }
 
             var vehicle = await _context.Vehicles
-                .Include(v => v.Location)
-                .Include(v => v.Resrvation)
-                .Include(v => v.Type)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (vehicle == null)
             {
@@ -51,9 +54,6 @@ namespace BikeRental.Controllers
         // GET: Vehicles/Create
         public IActionResult Create()
         {
-            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Address");
-            ViewData["ReservationId"] = new SelectList(_context.Reservations, "Id", "Id");
-            ViewData["TypeId"] = new SelectList(_context.VehicleTypes, "Id", "Type");
             return View();
         }
 
@@ -66,18 +66,16 @@ namespace BikeRental.Controllers
         {
             if (ModelState.IsValid)
             {
+                vehicle.Id = Guid.NewGuid();
                 _context.Add(vehicle);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Address", vehicle.LocationId);
-            ViewData["ReservationId"] = new SelectList(_context.Reservations, "Id", "Id", vehicle.ReservationId);
-            ViewData["TypeId"] = new SelectList(_context.VehicleTypes, "Id", "Type", vehicle.TypeId);
             return View(vehicle);
         }
 
         // GET: Vehicles/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(Guid? id)
         {
             if (id == null || _context.Vehicles == null)
             {
@@ -89,9 +87,6 @@ namespace BikeRental.Controllers
             {
                 return NotFound();
             }
-            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Address", vehicle.LocationId);
-            ViewData["ReservationId"] = new SelectList(_context.Reservations, "Id", "Id", vehicle.ReservationId);
-            ViewData["TypeId"] = new SelectList(_context.VehicleTypes, "Id", "Type", vehicle.TypeId);
             return View(vehicle);
         }
 
@@ -100,7 +95,7 @@ namespace BikeRental.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Manufacturer,Model,Price,LocationId,Availability,Description,Image,TypeId,ReservationId")] Vehicle vehicle)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Manufacturer,Model,Price,LocationId,Availability,Description,Image,TypeId,ReservationId")] Vehicle vehicle)
         {
             if (id != vehicle.Id)
             {
@@ -127,14 +122,11 @@ namespace BikeRental.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["LocationId"] = new SelectList(_context.Locations, "Id", "Address", vehicle.LocationId);
-            ViewData["ReservationId"] = new SelectList(_context.Reservations, "Id", "Id", vehicle.ReservationId);
-            ViewData["TypeId"] = new SelectList(_context.VehicleTypes, "Id", "Type", vehicle.TypeId);
             return View(vehicle);
         }
 
         // GET: Vehicles/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null || _context.Vehicles == null)
             {
@@ -142,9 +134,6 @@ namespace BikeRental.Controllers
             }
 
             var vehicle = await _context.Vehicles
-                .Include(v => v.Location)
-                .Include(v => v.Resrvation)
-                .Include(v => v.Type)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (vehicle == null)
             {
@@ -157,7 +146,7 @@ namespace BikeRental.Controllers
         // POST: Vehicles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
             if (_context.Vehicles == null)
             {
@@ -173,9 +162,9 @@ namespace BikeRental.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool VehicleExists(int id)
+        private bool VehicleExists(Guid id)
         {
           return (_context.Vehicles?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+        }*/
     }
 }

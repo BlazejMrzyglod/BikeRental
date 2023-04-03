@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace BikeRental.Models.Models
 {
-    public class VehicleType
+    public class VehicleType : IEntity<Guid>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Type { get; set; }
         public virtual ICollection<Vehicle> Vehicles { get; set; }
     }

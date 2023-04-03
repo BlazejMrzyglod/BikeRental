@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace BikeRental.Models.Models
 {
-    public class Reservation
+    public class Reservation : IEntity<Guid>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public DateTime ReservationDate { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }

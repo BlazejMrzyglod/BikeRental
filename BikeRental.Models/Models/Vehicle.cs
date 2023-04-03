@@ -9,9 +9,9 @@ using System.Xml.Linq;
 
 namespace BikeRental.Models.Models
 {
-    public class Vehicle
+    public class Vehicle : IEntity<Guid>
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Manufacturer { get; set; }
         public string Model { get; set; }
         public int Price { get; set; }
