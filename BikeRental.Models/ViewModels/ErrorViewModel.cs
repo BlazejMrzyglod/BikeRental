@@ -1,4 +1,4 @@
-namespace BikeRental.Models
+namespace BikeRental.Models.ViewModels
 {
     public class ErrorViewModel
     {

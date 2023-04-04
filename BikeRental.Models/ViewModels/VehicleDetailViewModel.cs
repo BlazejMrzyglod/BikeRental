@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 
-namespace BikeRental.Models
+namespace BikeRental.Models.ViewModels
 {
     public class VehicleDetailViewModel : IEntity<Guid>
     {

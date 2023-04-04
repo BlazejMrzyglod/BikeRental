@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Xml.Linq;
 
-namespace BikeRental.Models
+namespace BikeRental.Models.ViewModels
 {
     public class VehicleItemViewModel : IEntity<Guid>
     {

@@ -1,5 +1,4 @@
-﻿using BikeRental.Data;
-using BikeRental.Models;
+﻿using BikeRental.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

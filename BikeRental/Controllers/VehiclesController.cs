@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using BikeRental.Data;
 using BikeRental.Models.Models;
 using BikeRental.Services.Repository;
 using BikeRental.Services.Repository.EntityFramework;
 using BikeRental.Models;
+using BikeRental.Services;
 
 namespace BikeRental.Controllers
 {

@@ -1,4 +1,5 @@
 ﻿using BikeRental.Models;
+using BikeRental.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 

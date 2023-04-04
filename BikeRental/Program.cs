@@ -1,9 +1,9 @@
-using BikeRental.Data;
 using BikeRental.Services.Repository.EntityFramework;
 using BikeRental.Services.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using BikeRental.Models;
+using BikeRental.Services;
 
 /*List<VehicleDetailViewModel> vehiclesDetails = new List<VehicleDetailViewModel>()
         {
