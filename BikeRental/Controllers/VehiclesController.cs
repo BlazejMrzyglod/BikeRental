@@ -10,6 +10,7 @@ using BikeRental.Services.Repository;
 using BikeRental.Services.Repository.EntityFramework;
 using BikeRental.Models;
 using BikeRental.Services;
+using BikeRental.Data;
 
 namespace BikeRental.Controllers
 {
@@ -17,7 +18,7 @@ namespace BikeRental.Controllers
     {
         private readonly IRepositoryService<Vehicle> _repository;
 
-        public VehiclesController(ApplicationDbContext context)
+        public VehiclesController(Services.DbContext context)
         {
             _repository = new RepositoryService<Vehicle>(context);
         }

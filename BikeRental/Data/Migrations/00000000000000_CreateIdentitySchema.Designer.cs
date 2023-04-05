@@ -9,7 +9,7 @@ using System;
 
 namespace BikeRental.Data.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(Microsoft.EntityFrameworkCore.DbContext))]
     [Migration("00000000000000_CreateIdentitySchema")]
     partial class CreateIdentitySchema
     {

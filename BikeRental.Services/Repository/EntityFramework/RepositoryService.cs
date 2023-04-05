@@ -1,4 +1,5 @@
-﻿using BikeRental.Models;
+﻿using BikeRental.Services;
+using BikeRental.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,10 +12,10 @@ namespace BikeRental.Services.Repository.EntityFramework
 {
     public class RepositoryService<T> : IRepositoryService<T> where T : class, IEntity<Guid>
     {
-        protected ApplicationDbContext _context;
+        protected DbContext _context;
         protected DbSet<T> _set;
 
-        public RepositoryService(ApplicationDbContext context)
+        public RepositoryService(DbContext context)
         {
             _context = context;
             _set = _context.Set<T>();

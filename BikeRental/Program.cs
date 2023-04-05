@@ -3,7 +3,8 @@ using BikeRental.Services.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using BikeRental.Models;
-using BikeRental.Services;
+using BikeRental.Data;
+using Microsoft.Extensions.DependencyInjection;
 
 /*List<VehicleDetailViewModel> vehiclesDetails = new List<VehicleDetailViewModel>()
         {
