@@ -18,16 +18,12 @@ namespace BikeRental.Controllers
     public class VehiclesController : Controller
     {
         private readonly IRepositoryService<Vehicle> _vehicleRepository;
-        private readonly IRepositoryService<Location> _locationRepository;
-        private readonly IRepositoryService<VehicleType> _typeRepository;
 
         public VehiclesController(Services.ApplicationDbContext context)
         {
             _vehicleRepository = new RepositoryService<Vehicle>(context);
             _vehicleRepository.Add(new Vehicle() { Id = Guid.NewGuid(), Manufacturer = "dasdasd", Price = 12313, Availability = true, Description = "dasdas", Image = "dasda", Location = new Location() { Address = "dasd", Id = Guid.NewGuid() }, Model = "dasdas", Type = new VehicleType() { Id = Guid.NewGuid(), Type = "fasfasf" }});
             _vehicleRepository.Save();
-            _locationRepository = new RepositoryService<Location>(context);
-            _typeRepository = new RepositoryService<VehicleType>(context);
         }
 
         // GET: Vehicles
@@ -51,8 +47,8 @@ namespace BikeRental.Controllers
             {
                 return NotFound();
             }
-
-            var vehicle = _vehicleRepository.GetSingle(id);
+            var vehicle = _vehicleRepository.GetAllRecords().Include(x => x.Type).Include(x => x.Location)
+               .FirstOrDefault(m => m.Id == id);
             VehicleDetailViewModel vehicleViewModel = new VehicleDetailViewModel(vehicle);
             if (vehicleViewModel == null)
             {
@@ -94,7 +90,8 @@ namespace BikeRental.Controllers
                 return NotFound();
             }
 
-            var vehicle =  _vehicleRepository.GetSingle(id);
+            var vehicle = _vehicleRepository.GetAllRecords().Include(x => x.Type).Include(x => x.Location)
+               .FirstOrDefault(m => m.Id == id);
             VehicleDetailViewModel vehicleViewModel = new VehicleDetailViewModel(vehicle);
             if (vehicleViewModel == null)
             {
@@ -108,23 +105,23 @@ namespace BikeRental.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Manufacturer,Model,Price,LocationId,Availability,Description,Image,TypeId,ReservationId")] Vehicle vehicle)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Manufacturer,Model,Price,Location,Availability,Description,Image,Type,ReservationId")] VehicleDetailViewModel vehicle)
         {
             if (id != vehicle.Id)
             {
                 return NotFound();
             }
-
+            var vehicleModel = new Vehicle(vehicle);
             if (ModelState.IsValid)
             {
                 try
-                {
-                    _vehicleRepository.Edit(vehicle);
+                {       
+                    _vehicleRepository.Edit(vehicleModel);
                     _vehicleRepository.Save();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!VehicleExists(vehicle.Id))
+                    if (!VehicleExists(vehicleModel.Id))
                     {
                         return NotFound();
                     }
@@ -135,7 +132,7 @@ namespace BikeRental.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(vehicle);
+            return View(vehicleModel);
         }
 
         // GET: Vehicles/Delete/5
@@ -146,8 +143,8 @@ namespace BikeRental.Controllers
                 return NotFound();
             }
 
-            var vehicle = await _vehicleRepository.GetAllRecords()
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var vehicle = _vehicleRepository.GetAllRecords().Include(x => x.Type).Include(x => x.Location)
+                .FirstOrDefault(m => m.Id == id);
             VehicleDetailViewModel vehicleViewModel = new VehicleDetailViewModel(vehicle);
             if (vehicleViewModel == null)
             {
@@ -166,7 +163,8 @@ namespace BikeRental.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Vehicles'  is null.");
             }
-            var vehicle = _vehicleRepository.GetSingle(id);
+            var vehicle = _vehicleRepository.GetAllRecords().Include(x => x.Type).Include(x => x.Location)
+               .FirstOrDefault(m => m.Id == id);
 
             if (vehicle != null)
             {

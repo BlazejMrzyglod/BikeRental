@@ -1,19 +1,19 @@
-﻿using BikeRental.Models.ViewModels;
+﻿using BikeRental.Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BikeRental.Models.Models
+namespace BikeRental.Models.ViewModels
 {
-    public class Location : IEntity<Guid>
+    public class LocationViewModel
     {
         public Guid Id { get; set; }
         public string Address { get; set; }
-        public virtual ICollection<Vehicle> Vehicles { get; set; }
-        public Location() { }
-        public Location(LocationViewModel location)
+
+        public LocationViewModel() { }
+        public LocationViewModel(Location location)
         {
             Id = location.Id;
             Address = location.Address;

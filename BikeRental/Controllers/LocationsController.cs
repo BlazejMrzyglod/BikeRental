@@ -9,6 +9,7 @@ using BikeRental.Data;
 using BikeRental.Models.Models;
 using BikeRental.Services.Repository;
 using BikeRental.Services.Repository.EntityFramework;
+using BikeRental.Models.ViewModels;
 
 namespace BikeRental.Controllers
 {
@@ -24,8 +25,14 @@ namespace BikeRental.Controllers
         // GET: Locations
         public async Task<IActionResult> Index()
         {
-              return _repository.GetAllRecords() != null ? 
-                          View(await _repository.GetAllRecords().ToListAsync()) :
+            var locations = _repository.GetAllRecords();
+            List<LocationViewModel> locationViewModels = new List<LocationViewModel>();
+            foreach (var location in locations)
+            {
+                locationViewModels.Add(new LocationViewModel(location));
+            }
+            return _repository.GetAllRecords() != null ? 
+                          View(locationViewModels) :
                           Problem("Entity set 'ApplicationDbContext.Locations'  is null.");
         }
 
@@ -37,14 +44,15 @@ namespace BikeRental.Controllers
                 return NotFound();
             }
 
-            var location = await _repository.GetAllRecords()
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (location == null)
+            var location = _repository.GetAllRecords()
+                .FirstOrDefault(m => m.Id == id);
+            var locationModel = new LocationViewModel(location);
+            if (locationModel == null)
             {
                 return NotFound();
             }
 
-            return View(location);
+            return View(locationModel);
         }
 
         // GET: Locations/Create
@@ -58,16 +66,16 @@ namespace BikeRental.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Address")] Location location)
+        public async Task<IActionResult> Create([Bind("Address")] LocationViewModel location)
         {
-            if (ModelState.IsValid)
-            {
+/*            if (ModelState.IsValid)
+            {*/
                 location.Id = Guid.NewGuid();
-                _repository.Add(location);
+                _repository.Add(new Location(location));
                 _repository.Save();
                 return RedirectToAction(nameof(Index));
-            }
-            return View(location);
+            //}
+            //return View(location);
         }
 
         // GET: Locations/Edit/5
@@ -79,11 +87,12 @@ namespace BikeRental.Controllers
             }
 
             var location = _repository.GetSingle(id);
-            if (location == null)
+            var locationModel = new LocationViewModel(location);
+            if (locationModel == null)
             {
                 return NotFound();
             }
-            return View(location);
+            return View(locationModel);
         }
 
         // POST: Locations/Edit/5
@@ -91,18 +100,18 @@ namespace BikeRental.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Address")] Location location)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Address")] LocationViewModel location)
         {
             if (id != location.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
+            /*if (ModelState.IsValid)
+            {*/
                 try
                 {
-                    _repository.Edit(location);
+                    _repository.Edit(new Location(location));
                     _repository.Save();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -117,8 +126,8 @@ namespace BikeRental.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
-            return View(location);
+            /*}
+            return View(location);*/
         }
 
         // GET: Locations/Delete/5
@@ -129,14 +138,15 @@ namespace BikeRental.Controllers
                 return NotFound();
             }
 
-            var location = await _repository.GetAllRecords()
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (location == null)
+            var location = _repository.GetAllRecords()
+                .FirstOrDefault(m => m.Id == id);
+            var locationModel = new LocationViewModel(location);
+            if (locationModel == null)
             {
                 return NotFound();
             }
 
-            return View(location);
+            return View(locationModel);
         }
 
         // POST: Locations/Delete/5
