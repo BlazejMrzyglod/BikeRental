@@ -43,12 +43,7 @@ namespace BikeRental.Controllers
         // GET: Vehicles/Details/5
         public async Task<IActionResult> Details(Guid id)
         {
-            if (id == null || _vehicleRepository.GetAllRecords() == null)
-            {
-                return NotFound();
-            }
-            var vehicle = _vehicleRepository.GetAllRecords().Include(x => x.Type).Include(x => x.Location)
-               .FirstOrDefault(m => m.Id == id);
+            var vehicle = _vehicleRepository.GetAllRecords().Where(x => x.Id == id).Include(x => x.Type).Include(x => x.Location).Single();
             VehicleDetailViewModel vehicleViewModel = new VehicleDetailViewModel(vehicle);
             if (vehicleViewModel == null)
             {
@@ -85,13 +80,7 @@ namespace BikeRental.Controllers
         // GET: Vehicles/Edit/5
         public async Task<IActionResult> Edit(Guid id)
         {
-            if (id == null || _vehicleRepository.GetAllRecords() == null)
-            {
-                return NotFound();
-            }
-
-            var vehicle = _vehicleRepository.GetAllRecords().Include(x => x.Type).Include(x => x.Location)
-               .FirstOrDefault(m => m.Id == id);
+            var vehicle = _vehicleRepository.GetAllRecords().Where(x => x.Id == id).Include(x => x.Type).Include(x => x.Location).Single();
             VehicleDetailViewModel vehicleViewModel = new VehicleDetailViewModel(vehicle);
             if (vehicleViewModel == null)
             {
@@ -143,8 +132,7 @@ namespace BikeRental.Controllers
                 return NotFound();
             }
 
-            var vehicle = _vehicleRepository.GetAllRecords().Include(x => x.Type).Include(x => x.Location)
-                .FirstOrDefault(m => m.Id == id);
+            var vehicle = _vehicleRepository.GetAllRecords().Where(x => x.Id == id).Include(x => x.Type).Include(x => x.Location).Single();
             VehicleDetailViewModel vehicleViewModel = new VehicleDetailViewModel(vehicle);
             if (vehicleViewModel == null)
             {
