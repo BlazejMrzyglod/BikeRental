@@ -5,9 +5,9 @@ using BikeRental.Models;
 
 namespace BikeRental.Services
 {
-    public class DbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext
     {
-        public DbContext(DbContextOptions<DbContext> options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }

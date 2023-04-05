@@ -12,10 +12,10 @@ namespace BikeRental.Services.Repository.EntityFramework
 {
     public class RepositoryService<T> : IRepositoryService<T> where T : class, IEntity<Guid>
     {
-        protected DbContext _context;
+        protected ApplicationDbContext _context;
         protected DbSet<T> _set;
 
-        public RepositoryService(DbContext context)
+        public RepositoryService(ApplicationDbContext context)
         {
             _context = context;
             _set = _context.Set<T>();

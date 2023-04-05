@@ -7,35 +7,37 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BikeRental.Data;
 using BikeRental.Models.Models;
+using BikeRental.Services.Repository;
+using BikeRental.Services.Repository.EntityFramework;
 
 namespace BikeRental.Controllers
 {
     public class LocationsController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IRepositoryService<Location> _repository;
 
-        public LocationsController(ApplicationDbContext context)
+        public LocationsController(Services.ApplicationDbContext context)
         {
-            _context = context;
+            _repository = new RepositoryService<Location>(context);
         }
 
         // GET: Locations
         public async Task<IActionResult> Index()
         {
-              return _context.Locations != null ? 
-                          View(await _context.Locations.ToListAsync()) :
+              return _repository.GetAllRecords() != null ? 
+                          View(await _repository.GetAllRecords().ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.Locations'  is null.");
         }
 
         // GET: Locations/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null || _context.Locations == null)
+            if (id == null || _repository.GetAllRecords() == null)
             {
                 return NotFound();
             }
 
-            var location = await _context.Locations
+            var location = await _repository.GetAllRecords()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (location == null)
             {
@@ -61,22 +63,22 @@ namespace BikeRental.Controllers
             if (ModelState.IsValid)
             {
                 location.Id = Guid.NewGuid();
-                _context.Add(location);
-                await _context.SaveChangesAsync();
+                _repository.Add(location);
+                _repository.Save();
                 return RedirectToAction(nameof(Index));
             }
             return View(location);
         }
 
         // GET: Locations/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        public async Task<IActionResult> Edit(Guid id)
         {
-            if (id == null || _context.Locations == null)
+            if (id == null || _repository.GetAllRecords() == null)
             {
                 return NotFound();
             }
 
-            var location = await _context.Locations.FindAsync(id);
+            var location = _repository.GetSingle(id);
             if (location == null)
             {
                 return NotFound();
@@ -100,8 +102,8 @@ namespace BikeRental.Controllers
             {
                 try
                 {
-                    _context.Update(location);
-                    await _context.SaveChangesAsync();
+                    _repository.Edit(location);
+                    _repository.Save();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -122,12 +124,12 @@ namespace BikeRental.Controllers
         // GET: Locations/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null || _context.Locations == null)
+            if (id == null || _repository.GetAllRecords() == null)
             {
                 return NotFound();
             }
 
-            var location = await _context.Locations
+            var location = await _repository.GetAllRecords()
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (location == null)
             {
@@ -142,23 +144,23 @@ namespace BikeRental.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            if (_context.Locations == null)
+            if (_repository.GetAllRecords() == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.Locations'  is null.");
             }
-            var location = await _context.Locations.FindAsync(id);
+            var location = _repository.GetSingle(id);
             if (location != null)
             {
-                _context.Locations.Remove(location);
+               _repository.Delete(location);
             }
-            
-            await _context.SaveChangesAsync();
+
+            _repository.Save();
             return RedirectToAction(nameof(Index));
         }
 
         private bool LocationExists(Guid id)
         {
-          return (_context.Locations?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_repository.GetAllRecords()?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

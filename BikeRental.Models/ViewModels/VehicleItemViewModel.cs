@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BikeRental.Models.Models;
+using System.ComponentModel.DataAnnotations;
 using System.Drawing;
 using System.Xml.Linq;
 
@@ -6,6 +7,7 @@ namespace BikeRental.Models.ViewModels
 {
     public class VehicleItemViewModel : IEntity<Guid>
     {
+       
         [Display(Name = "Identyfikator")]
         public Guid Id { get; set; }
         [Display(Name = "Nazwa")]
@@ -16,5 +18,13 @@ namespace BikeRental.Models.ViewModels
         public bool Availability { get; set; }
         [Display(Name = "Zdjęcie")]
         public string? Image { get; set; }
+        public VehicleItemViewModel(Vehicle vehicle)
+        {
+            Id= vehicle.Id;
+            Name = vehicle.Manufacturer + " " + vehicle.Model;
+            Price = vehicle.Price;
+            Availability = vehicle.Availability;
+            Image = vehicle.Image;
+        }
     }
 }

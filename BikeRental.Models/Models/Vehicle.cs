@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BikeRental.Models.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Drawing;
@@ -24,5 +25,23 @@ namespace BikeRental.Models.Models
         public virtual VehicleType Type { get; set; }
         public int ReservationId { get; set; }
         public virtual Reservation? Resrvation { get; set; }
+
+        public Vehicle(VehicleDetailViewModel vehicle)
+        {
+            Id = vehicle.Id;
+            Manufacturer = vehicle.Manufacturer;
+            Model = vehicle.Model;
+            Price = vehicle.Price;
+            Availability = vehicle.Availability;
+            Description = vehicle.Description;
+            Image = vehicle.Image;
+            Location = new Location() { Id = Guid.NewGuid(), Address = vehicle.Location };
+            Type = new VehicleType() { Id = Guid.NewGuid(), Type = vehicle.Type };
+        }
+
+        public Vehicle()
+        {
+
+        }
     }
 }

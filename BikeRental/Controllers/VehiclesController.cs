@@ -11,44 +11,55 @@ using BikeRental.Services.Repository.EntityFramework;
 using BikeRental.Models;
 using BikeRental.Services;
 using BikeRental.Data;
+using BikeRental.Models.ViewModels;
 
 namespace BikeRental.Controllers
 {
     public class VehiclesController : Controller
     {
-        private readonly IRepositoryService<Vehicle> _repository;
+        private readonly IRepositoryService<Vehicle> _vehicleRepository;
+        private readonly IRepositoryService<Location> _locationRepository;
+        private readonly IRepositoryService<VehicleType> _typeRepository;
 
-        public VehiclesController(Services.DbContext context)
+        public VehiclesController(Services.ApplicationDbContext context)
         {
-            _repository = new RepositoryService<Vehicle>(context);
+            _vehicleRepository = new RepositoryService<Vehicle>(context);
+            _vehicleRepository.Add(new Vehicle() { Id = Guid.NewGuid(), Manufacturer = "dasdasd", Price = 12313, Availability = true, Description = "dasdas", Image = "dasda", Location = new Location() { Address = "dasd", Id = Guid.NewGuid() }, Model = "dasdas", Type = new VehicleType() { Id = Guid.NewGuid(), Type = "fasfasf" }});
+            _vehicleRepository.Save();
+            _locationRepository = new RepositoryService<Location>(context);
+            _typeRepository = new RepositoryService<VehicleType>(context);
         }
-        /*_repository.Add(new Vehicle() { Id = new Guid(), Manufacturer = "dasdasd", Price = 12313, Availability = true});
-            _repository.Save();*/
+
         // GET: Vehicles
         public async Task<IActionResult> Index()
         {
-            var vehicles = _repository.GetAllRecords().AsEnumerable();
-            return vehicles != null ? 
-                          View(vehicles) :
+            var vehicles = _vehicleRepository.GetAllRecords();
+            List<VehicleItemViewModel> vehiclesViewModels = new List<VehicleItemViewModel>();
+            foreach (var vehicle in vehicles)
+            {
+                vehiclesViewModels.Add(new VehicleItemViewModel(vehicle));
+            }
+            return vehiclesViewModels != null ? 
+                          View(vehiclesViewModels) :
                           Problem("Entity set 'ApplicationDbContext.Vehicles'  is null.");
         }
 
         // GET: Vehicles/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(Guid id)
         {
-            if (id == null || _repository.GetAllRecords() == null)
+            if (id == null || _vehicleRepository.GetAllRecords() == null)
             {
                 return NotFound();
             }
 
-            var vehicle = await _repository.GetAllRecords()
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (vehicle == null)
+            var vehicle = _vehicleRepository.GetSingle(id);
+            VehicleDetailViewModel vehicleViewModel = new VehicleDetailViewModel(vehicle);
+            if (vehicleViewModel == null)
             {
                 return NotFound();
             }
 
-            return View(vehicle);
+            return View(vehicleViewModel);
         }
 
         // GET: Vehicles/Create
@@ -62,13 +73,14 @@ namespace BikeRental.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Manufacturer,Model,Price,LocationId,Availability,Description,Image,TypeId,ReservationId")] Vehicle vehicle)
+        public async Task<IActionResult> Create([Bind("Id,Manufacturer,Model,Price,Location,Availability,Description,Image,Type,ReservationId")] VehicleDetailViewModel vehicle)
         {
             if (ModelState.IsValid)
             {
                 vehicle.Id = Guid.NewGuid();
-                _repository.Add(vehicle);
-                _repository.Save();
+                var vehicleModel = new Vehicle(vehicle);
+                _vehicleRepository.Add(vehicleModel);
+                _vehicleRepository.Save();
                 return RedirectToAction(nameof(Index));
             }
             return View(vehicle);
@@ -77,17 +89,18 @@ namespace BikeRental.Controllers
         // GET: Vehicles/Edit/5
         public async Task<IActionResult> Edit(Guid id)
         {
-            if (id == null || _repository.GetAllRecords() == null)
+            if (id == null || _vehicleRepository.GetAllRecords() == null)
             {
                 return NotFound();
             }
 
-            var vehicle =  _repository.GetSingle(id);
-            if (vehicle == null)
+            var vehicle =  _vehicleRepository.GetSingle(id);
+            VehicleDetailViewModel vehicleViewModel = new VehicleDetailViewModel(vehicle);
+            if (vehicleViewModel == null)
             {
                 return NotFound();
             }
-            return View(vehicle);
+            return View(vehicleViewModel);
         }
 
         // POST: Vehicles/Edit/5
@@ -106,8 +119,8 @@ namespace BikeRental.Controllers
             {
                 try
                 {
-                    _repository.Edit(vehicle);
-                    _repository.Save();
+                    _vehicleRepository.Edit(vehicle);
+                    _vehicleRepository.Save();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -128,19 +141,20 @@ namespace BikeRental.Controllers
         // GET: Vehicles/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null || _repository.GetAllRecords() == null)
+            if (id == null || _vehicleRepository.GetAllRecords() == null)
             {
                 return NotFound();
             }
 
-            var vehicle = await _repository.GetAllRecords()
+            var vehicle = await _vehicleRepository.GetAllRecords()
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (vehicle == null)
+            VehicleDetailViewModel vehicleViewModel = new VehicleDetailViewModel(vehicle);
+            if (vehicleViewModel == null)
             {
                 return NotFound();
             }
 
-            return View(vehicle);
+            return View(vehicleViewModel);
         }
 
         // POST: Vehicles/Delete/5
@@ -148,23 +162,24 @@ namespace BikeRental.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            if (_repository.GetAllRecords() == null)
+            if (_vehicleRepository.GetAllRecords() == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.Vehicles'  is null.");
             }
-            var vehicle = _repository.GetSingle(id);
+            var vehicle = _vehicleRepository.GetSingle(id);
+
             if (vehicle != null)
             {
-                _repository.Delete(vehicle);
+                _vehicleRepository.Delete(vehicle);
             }
 
-            _repository.Save();
+            _vehicleRepository.Save();
             return RedirectToAction(nameof(Index));
         }
 
         private bool VehicleExists(Guid id)
         {
-            return (_repository.GetAllRecords()?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_vehicleRepository.GetAllRecords()?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
