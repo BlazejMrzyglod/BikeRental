@@ -5,6 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using BikeRental.Models;
 using BikeRental.Data;
 using Microsoft.Extensions.DependencyInjection;
+using AutoMapper;
+using BikeRental.Models.ViewModels;
+using BikeRental.Models.Models;
+using BikeRental;
 
 /*List<VehicleDetailViewModel> vehiclesDetails = new List<VehicleDetailViewModel>()
         {
@@ -18,6 +22,20 @@ List<VehicleItemViewModel> vehicles = new List<VehicleItemViewModel>()
             new VehicleItemViewModel() { Id = 2, Availability = true, Name = "dwa", Price = 1234 },
             new VehicleItemViewModel() { Id = 3, Availability = true, Name = "trzy", Price = 1234 },
         };*/
+
+/*var configuration = new MapperConfiguration(cfg =>
+{
+    cfg.CreateMap<Location, LocationViewModel>();
+    cfg.CreateMap<LocationViewModel, Location>().ForMember(dest => dest.Vehicles, opt => opt.Ignore());
+    cfg.CreateMap<Vehicle, VehicleDetailViewModel>();
+    cfg.CreateMap<VehicleDetailViewModel, Vehicle>().ForMember(dest => dest.Location, opt => opt.Ignore()).ForMember(dest => dest.LocationId, opt => opt.Ignore()).ForMember(dest => dest.TypeId, opt => opt.Ignore()).ForMember(dest => dest.Type, opt => opt.Ignore()).ForMember(dest => dest.ReservationId, opt => opt.Ignore()).ForMember(dest => dest.Reservation, opt => opt.Ignore());
+    cfg.CreateMap<Vehicle, VehicleItemViewModel>().ForMember(dest => dest.Name, opt => opt.MapFrom(x => x.Manufacturer + ' ' + x.Model));
+});
+//only fo development
+configuration.AssertConfigurationIsValid();*/
+
+//var mapper = configuration.CreateMapper();
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -32,6 +50,9 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped(typeof(IRepositoryService<>), typeof(RepositoryService<>));
+
+builder.Services.AddAutoMapper(typeof(VehiclesProfile), typeof(LocationsProfile));
+
 
 var app = builder.Build();
 

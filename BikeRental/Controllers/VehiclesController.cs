@@ -12,18 +12,23 @@ using BikeRental.Models;
 using BikeRental.Services;
 using BikeRental.Data;
 using BikeRental.Models.ViewModels;
+using AutoMapper;
+using Microsoft.CodeAnalysis;
 
 namespace BikeRental.Controllers
 {
     public class VehiclesController : Controller
     {
         private readonly IRepositoryService<Vehicle> _vehicleRepository;
+        private readonly IMapper _mapper;
 
-        public VehiclesController(Services.ApplicationDbContext context)
+        public VehiclesController(Services.ApplicationDbContext context, IMapper mapper)
         {
             _vehicleRepository = new RepositoryService<Vehicle>(context);
-            _vehicleRepository.Add(new Vehicle() { Id = Guid.NewGuid(), Manufacturer = "dasdasd", Price = 12313, Availability = true, Description = "dasdas", Image = "dasda", Location = new Location() { Address = "dasd", Id = Guid.NewGuid() }, Model = "dasdas", Type = new VehicleType() { Id = Guid.NewGuid(), Type = "fasfasf" }});
+            _vehicleRepository.Add(new Vehicle() { Id = Guid.NewGuid(), Manufacturer = "dasdasd", Price = 12313, Availability = true, Description = "dasdas", Image = "dasda", 
+                                   Location = new Models.Models.Location() { Name = "dasd", Id = Guid.NewGuid() }, Model = "dasdas", Type = new VehicleType() { Id = Guid.NewGuid(), Type = "fasfasf" }});
             _vehicleRepository.Save();
+            _mapper = mapper;
         }
 
         // GET: Vehicles
@@ -33,9 +38,9 @@ namespace BikeRental.Controllers
             List<VehicleItemViewModel> vehiclesViewModels = new List<VehicleItemViewModel>();
             foreach (var vehicle in vehicles)
             {
-                vehiclesViewModels.Add(new VehicleItemViewModel(vehicle));
+                vehiclesViewModels.Add(_mapper.Map<VehicleItemViewModel>(vehicle));
             }
-            return vehiclesViewModels != null ? 
+            return vehicles != null ? 
                           View(vehiclesViewModels) :
                           Problem("Entity set 'ApplicationDbContext.Vehicles'  is null.");
         }
@@ -44,13 +49,13 @@ namespace BikeRental.Controllers
         public async Task<IActionResult> Details(Guid id)
         {
             var vehicle = _vehicleRepository.GetAllRecords().Where(x => x.Id == id).Include(x => x.Type).Include(x => x.Location).Single();
-            VehicleDetailViewModel vehicleViewModel = new VehicleDetailViewModel(vehicle);
+            /*VehicleDetailViewModel vehicleViewModel = new VehicleDetailViewModel(vehicle);
             if (vehicleViewModel == null)
             {
                 return NotFound();
-            }
+            }*/
 
-            return View(vehicleViewModel);
+            return View(_mapper.Map<VehicleDetailViewModel>(vehicle));
         }
 
         // GET: Vehicles/Create
@@ -69,8 +74,8 @@ namespace BikeRental.Controllers
             if (ModelState.IsValid)
             {
                 vehicle.Id = Guid.NewGuid();
-                var vehicleModel = new Vehicle(vehicle);
-                _vehicleRepository.Add(vehicleModel);
+                //var vehicleModel = new Vehicle(vehicle);
+                _vehicleRepository.Add(_mapper.Map<Vehicle>(vehicle));
                 _vehicleRepository.Save();
                 return RedirectToAction(nameof(Index));
             }
@@ -81,12 +86,12 @@ namespace BikeRental.Controllers
         public async Task<IActionResult> Edit(Guid id)
         {
             var vehicle = _vehicleRepository.GetAllRecords().Where(x => x.Id == id).Include(x => x.Type).Include(x => x.Location).Single();
-            VehicleDetailViewModel vehicleViewModel = new VehicleDetailViewModel(vehicle);
+            /*VehicleDetailViewModel vehicleViewModel = new VehicleDetailViewModel(vehicle);
             if (vehicleViewModel == null)
             {
                 return NotFound();
-            }
-            return View(vehicleViewModel);
+            }*/
+            return View(_mapper.Map<VehicleDetailViewModel>(vehicle));
         }
 
         // POST: Vehicles/Edit/5
@@ -100,17 +105,17 @@ namespace BikeRental.Controllers
             {
                 return NotFound();
             }
-            var vehicleModel = new Vehicle(vehicle);
+            //var vehicleModel = new Vehicle(vehicle);
             if (ModelState.IsValid)
             {
                 try
                 {       
-                    _vehicleRepository.Edit(vehicleModel);
+                    _vehicleRepository.Edit(_mapper.Map<Vehicle>(vehicle));
                     _vehicleRepository.Save();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!VehicleExists(vehicleModel.Id))
+                    if (!VehicleExists(vehicle.Id))
                     {
                         return NotFound();
                     }
@@ -121,7 +126,7 @@ namespace BikeRental.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(vehicleModel);
+            return View(_mapper.Map<Vehicle>(vehicle));
         }
 
         // GET: Vehicles/Delete/5
@@ -133,13 +138,13 @@ namespace BikeRental.Controllers
             }
 
             var vehicle = _vehicleRepository.GetAllRecords().Where(x => x.Id == id).Include(x => x.Type).Include(x => x.Location).Single();
-            VehicleDetailViewModel vehicleViewModel = new VehicleDetailViewModel(vehicle);
+            /*VehicleDetailViewModel vehicleViewModel = new VehicleDetailViewModel(vehicle);
             if (vehicleViewModel == null)
             {
                 return NotFound();
-            }
+            }*/
 
-            return View(vehicleViewModel);
+            return View(_mapper.Map<VehicleDetailViewModel>(vehicle));
         }
 
         // POST: Vehicles/Delete/5

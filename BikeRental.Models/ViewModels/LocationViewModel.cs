@@ -10,13 +10,7 @@ namespace BikeRental.Models.ViewModels
     public class LocationViewModel
     {
         public Guid Id { get; set; }
-        public string Address { get; set; }
+        public string Name { get; set; }
 
-        public LocationViewModel() { }
-        public LocationViewModel(Location location)
-        {
-            Id = location.Id;
-            Address = location.Address;
-        }
     }
 }

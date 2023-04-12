@@ -25,21 +25,5 @@ namespace BikeRental.Models.ViewModels
         [Display(Name = "Zdjęcie")]
         public string Image { get; set; }
 
-        public VehicleDetailViewModel(Vehicle vehicle)
-        {
-            Id = vehicle.Id;
-            Manufacturer = vehicle.Manufacturer;
-            Model = vehicle.Model;
-            Price = vehicle.Price;
-            Location = vehicle.Location.Address;
-            Availability = vehicle.Availability;
-            Description = vehicle.Description;
-            Image = vehicle.Image;
-            Type = vehicle.Type.Type;
-        }
-        public VehicleDetailViewModel()
-        {
-
-        }
     }
 }

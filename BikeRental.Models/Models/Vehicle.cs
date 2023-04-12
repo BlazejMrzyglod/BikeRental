@@ -24,24 +24,7 @@ namespace BikeRental.Models.Models
         public Guid TypeId { get; set; }
         public virtual VehicleType Type { get; set; }
         public int ReservationId { get; set; }
-        public virtual Reservation? Resrvation { get; set; }
+        public virtual Reservation? Reservation { get; set; }
 
-        public Vehicle(VehicleDetailViewModel vehicle)
-        {
-            Id = vehicle.Id;
-            Manufacturer = vehicle.Manufacturer;
-            Model = vehicle.Model;
-            Price = vehicle.Price;
-            Availability = vehicle.Availability;
-            Description = vehicle.Description;
-            Image = vehicle.Image;
-            Location = new Location() { Id = Guid.NewGuid(), Address = vehicle.Location };
-            Type = new VehicleType() { Id = Guid.NewGuid(), Type = vehicle.Type };
-        }
-
-        public Vehicle()
-        {
-
-        }
     }
 }

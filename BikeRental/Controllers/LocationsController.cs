@@ -10,16 +10,21 @@ using BikeRental.Models.Models;
 using BikeRental.Services.Repository;
 using BikeRental.Services.Repository.EntityFramework;
 using BikeRental.Models.ViewModels;
+using AutoMapper;
+using Microsoft.CodeAnalysis;
 
 namespace BikeRental.Controllers
 {
     public class LocationsController : Controller
     {
-        private readonly IRepositoryService<Location> _repository;
+        private readonly IRepositoryService<Models.Models.Location> _repository;
+        private readonly IMapper _mapper;
 
-        public LocationsController(Services.ApplicationDbContext context)
+        public LocationsController(Services.ApplicationDbContext context, IMapper mapper)
         {
-            _repository = new RepositoryService<Location>(context);
+            _repository = new RepositoryService<Models.Models.Location>(context);
+            _repository.Add(new Models.Models.Location() { Name = "dasd", Id = Guid.NewGuid() });
+            _mapper = mapper;
         }
 
         // GET: Locations
@@ -29,30 +34,28 @@ namespace BikeRental.Controllers
             List<LocationViewModel> locationViewModels = new List<LocationViewModel>();
             foreach (var location in locations)
             {
-                locationViewModels.Add(new LocationViewModel(location));
+                locationViewModels.Add(_mapper.Map<LocationViewModel>(location));
             }
-            return _repository.GetAllRecords() != null ? 
-                          View(locationViewModels) :
-                          Problem("Entity set 'ApplicationDbContext.Locations'  is null.");
+            return View(locationViewModels);
         }
 
         // GET: Locations/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
-            if (id == null || _repository.GetAllRecords() == null)
+            /*if (id == null || _repository.GetAllRecords() == null)
             {
                 return NotFound();
             }
-
+*/
             var location = _repository.GetAllRecords()
-                .FirstOrDefault(m => m.Id == id);
-            var locationModel = new LocationViewModel(location);
-            if (locationModel == null)
-            {
-                return NotFound();
-            }
+                .FirstOrDefault(x => x.Id == id);
+            /* var locationModel = new LocationViewModel(location);
+             if (locationModel == null)
+             {
+                 return NotFound();
+             }*/
 
-            return View(locationModel);
+            return View(_mapper.Map<LocationViewModel>(location));
         }
 
         // GET: Locations/Create
@@ -68,12 +71,12 @@ namespace BikeRental.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Address")] LocationViewModel location)
         {
-/*            if (ModelState.IsValid)
-            {*/
-                location.Id = Guid.NewGuid();
-                _repository.Add(new Location(location));
-                _repository.Save();
-                return RedirectToAction(nameof(Index));
+            /*            if (ModelState.IsValid)
+                        {*/
+            location.Id = Guid.NewGuid();
+            _repository.Add(_mapper.Map<Models.Models.Location>(location));
+            _repository.Save();
+            return RedirectToAction(nameof(Index));
             //}
             //return View(location);
         }
@@ -87,12 +90,12 @@ namespace BikeRental.Controllers
             }
 
             var location = _repository.GetSingle(id);
-            var locationModel = new LocationViewModel(location);
+            /*var locationModel = new LocationViewModel(location);
             if (locationModel == null)
             {
                 return NotFound();
-            }
-            return View(locationModel);
+            }*/
+            return View(_mapper.Map<LocationViewModel>(location));
         }
 
         // POST: Locations/Edit/5
@@ -109,23 +112,23 @@ namespace BikeRental.Controllers
 
             /*if (ModelState.IsValid)
             {*/
-                try
+            try
+            {
+                _repository.Edit(_mapper.Map<Models.Models.Location>(location));
+                _repository.Save();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!LocationExists(location.Id))
                 {
-                    _repository.Edit(new Location(location));
-                    _repository.Save();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!LocationExists(location.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
-                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Index));
             /*}
             return View(location);*/
         }
@@ -140,13 +143,13 @@ namespace BikeRental.Controllers
 
             var location = _repository.GetAllRecords()
                 .FirstOrDefault(m => m.Id == id);
-            var locationModel = new LocationViewModel(location);
+            /*var locationModel = new LocationViewModel(location);
             if (locationModel == null)
             {
                 return NotFound();
-            }
+            }*/
 
-            return View(locationModel);
+            return View(_mapper.Map<LocationViewModel>(location));
         }
 
         // POST: Locations/Delete/5
@@ -161,7 +164,7 @@ namespace BikeRental.Controllers
             var location = _repository.GetSingle(id);
             if (location != null)
             {
-               _repository.Delete(location);
+                _repository.Delete(location);
             }
 
             _repository.Save();
@@ -170,7 +173,7 @@ namespace BikeRental.Controllers
 
         private bool LocationExists(Guid id)
         {
-          return (_repository.GetAllRecords()?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_repository.GetAllRecords()?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
