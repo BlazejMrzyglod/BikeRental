@@ -9,6 +9,7 @@ using AutoMapper;
 using BikeRental.Models.ViewModels;
 using BikeRental.Models.Models;
 using BikeRental;
+using FluentValidation.AspNetCore;
 
 /*List<VehicleDetailViewModel> vehiclesDetails = new List<VehicleDetailViewModel>()
         {
@@ -47,11 +48,13 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<BikeRental.Services.ApplicationDbContext>();
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddViewOptions(options=>options.HtmlHelperOptions.ClientValidationEnabled = true);
 
 builder.Services.AddScoped(typeof(IRepositoryService<>), typeof(RepositoryService<>));
 
 builder.Services.AddAutoMapper(typeof(VehiclesProfile), typeof(LocationsProfile));
+
+builder.Services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ReservationValidator>());
 
 
 var app = builder.Build();

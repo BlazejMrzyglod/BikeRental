@@ -36,7 +36,7 @@ namespace BikeRental.Controllers
                 Image = "dasda",
                 Location = new Models.Models.Location() { Name = "dasd", Id = Guid.NewGuid() },
                 Model = "dasdas",
-                Type = new VehicleType() { Id = Guid.NewGuid(), Type = "fasfasf" }
+                Type = new VehicleType() { Id = Guid.NewGuid(), Name = "fasfasf" }
             });
             _repository.Save();
             _mapper = mapper;
@@ -79,7 +79,7 @@ namespace BikeRental.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Manufacturer,Model,Price,Location,Availability,Description,Image,Type,ReservationId")] VehicleDetailViewModel vehicle)
+        public async Task<IActionResult> Create([Bind("Id,Manufacturer,Model,Price,Location,Availability,Description,Image,Type")] VehicleDetailViewModel vehicle)
         {
             if (ModelState.IsValid)
             {

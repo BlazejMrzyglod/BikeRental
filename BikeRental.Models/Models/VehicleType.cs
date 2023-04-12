@@ -9,7 +9,7 @@ namespace BikeRental.Models.Models
     public class VehicleType : IEntity<Guid>
     {
         public Guid Id { get; set; }
-        public string Type { get; set; }
+        public string Name { get; set; }
         public virtual ICollection<Vehicle> Vehicles { get; set; }
     }
 }
