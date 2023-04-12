@@ -36,24 +36,25 @@ namespace BikeRental.Controllers
             {
                 locationViewModels.Add(_mapper.Map<LocationViewModel>(location));
             }
-            return View(locationViewModels);
+            return locations != null ?
+                          View(locationViewModels) :
+                          Problem("Entity set 'ApplicationDbContext.Location'  is null.");
         }
 
         // GET: Locations/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
-            /*if (id == null || _repository.GetAllRecords() == null)
+            if (id == null || _repository.GetAllRecords() == null)
             {
                 return NotFound();
             }
-*/
+
             var location = _repository.GetAllRecords()
                 .FirstOrDefault(x => x.Id == id);
-            /* var locationModel = new LocationViewModel(location);
-             if (locationModel == null)
-             {
-                 return NotFound();
-             }*/
+            if (location == null)
+            {
+                return NotFound();
+            }
 
             return View(_mapper.Map<LocationViewModel>(location));
         }
@@ -69,16 +70,16 @@ namespace BikeRental.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Address")] LocationViewModel location)
+        public async Task<IActionResult> Create([Bind("Name")] LocationViewModel location)
         {
-            /*            if (ModelState.IsValid)
-                        {*/
-            location.Id = Guid.NewGuid();
-            _repository.Add(_mapper.Map<Models.Models.Location>(location));
-            _repository.Save();
-            return RedirectToAction(nameof(Index));
-            //}
-            //return View(location);
+            if (ModelState.IsValid)
+            {
+                location.Id = Guid.NewGuid();
+                _repository.Add(_mapper.Map<Models.Models.Location>(location));
+                _repository.Save();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(location);
         }
 
         // GET: Locations/Edit/5
@@ -90,11 +91,10 @@ namespace BikeRental.Controllers
             }
 
             var location = _repository.GetSingle(id);
-            /*var locationModel = new LocationViewModel(location);
-            if (locationModel == null)
+            if (location == null)
             {
                 return NotFound();
-            }*/
+            }
             return View(_mapper.Map<LocationViewModel>(location));
         }
 
@@ -103,16 +103,16 @@ namespace BikeRental.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Address")] LocationViewModel location)
+        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name")] LocationViewModel location)
         {
             if (id != location.Id)
             {
                 return NotFound();
             }
 
-            /*if (ModelState.IsValid)
-            {*/
-            try
+            if (ModelState.IsValid)
+            {
+                try
             {
                 _repository.Edit(_mapper.Map<Models.Models.Location>(location));
                 _repository.Save();
@@ -129,8 +129,8 @@ namespace BikeRental.Controllers
                 }
             }
             return RedirectToAction(nameof(Index));
-            /*}
-            return View(location);*/
+            }
+            return View(location);
         }
 
         // GET: Locations/Delete/5
@@ -143,11 +143,10 @@ namespace BikeRental.Controllers
 
             var location = _repository.GetAllRecords()
                 .FirstOrDefault(m => m.Id == id);
-            /*var locationModel = new LocationViewModel(location);
-            if (locationModel == null)
+            if (location == null)
             {
                 return NotFound();
-            }*/
+            }
 
             return View(_mapper.Map<LocationViewModel>(location));
         }

@@ -14,27 +14,28 @@ using BikeRental.Data;
 using BikeRental.Models.ViewModels;
 using AutoMapper;
 using Microsoft.CodeAnalysis;
+using NuGet.Protocol.Core.Types;
 
 namespace BikeRental.Controllers
 {
     public class VehiclesController : Controller
     {
-        private readonly IRepositoryService<Vehicle> _vehicleRepository;
+        private readonly IRepositoryService<Vehicle> _repository;
         private readonly IMapper _mapper;
 
         public VehiclesController(Services.ApplicationDbContext context, IMapper mapper)
         {
-            _vehicleRepository = new RepositoryService<Vehicle>(context);
-            _vehicleRepository.Add(new Vehicle() { Id = Guid.NewGuid(), Manufacturer = "dasdasd", Price = 12313, Availability = true, Description = "dasdas", Image = "dasda", 
+            _repository = new RepositoryService<Vehicle>(context);
+            _repository.Add(new Vehicle() { Id = Guid.NewGuid(), Manufacturer = "dasdasd", Price = 12313, Availability = true, Description = "dasdas", Image = "dasda", 
                                    Location = new Models.Models.Location() { Name = "dasd", Id = Guid.NewGuid() }, Model = "dasdas", Type = new VehicleType() { Id = Guid.NewGuid(), Type = "fasfasf" }});
-            _vehicleRepository.Save();
+            _repository.Save();
             _mapper = mapper;
         }
 
         // GET: Vehicles
         public async Task<IActionResult> Index()
         {
-            var vehicles = _vehicleRepository.GetAllRecords();
+            var vehicles = _repository.GetAllRecords();
             List<VehicleItemViewModel> vehiclesViewModels = new List<VehicleItemViewModel>();
             foreach (var vehicle in vehicles)
             {
@@ -48,12 +49,11 @@ namespace BikeRental.Controllers
         // GET: Vehicles/Details/5
         public async Task<IActionResult> Details(Guid id)
         {
-            var vehicle = _vehicleRepository.GetAllRecords().Where(x => x.Id == id).Include(x => x.Type).Include(x => x.Location).Single();
-            /*VehicleDetailViewModel vehicleViewModel = new VehicleDetailViewModel(vehicle);
-            if (vehicleViewModel == null)
+            var vehicle = _repository.GetAllRecords().Where(x => x.Id == id).Include(x => x.Type).Include(x => x.Location).Single();
+            if (vehicle == null)
             {
                 return NotFound();
-            }*/
+            }
 
             return View(_mapper.Map<VehicleDetailViewModel>(vehicle));
         }
@@ -74,9 +74,8 @@ namespace BikeRental.Controllers
             if (ModelState.IsValid)
             {
                 vehicle.Id = Guid.NewGuid();
-                //var vehicleModel = new Vehicle(vehicle);
-                _vehicleRepository.Add(_mapper.Map<Vehicle>(vehicle));
-                _vehicleRepository.Save();
+                _repository.Add(_mapper.Map<Vehicle>(vehicle));
+                _repository.Save();
                 return RedirectToAction(nameof(Index));
             }
             return View(vehicle);
@@ -85,12 +84,15 @@ namespace BikeRental.Controllers
         // GET: Vehicles/Edit/5
         public async Task<IActionResult> Edit(Guid id)
         {
-            var vehicle = _vehicleRepository.GetAllRecords().Where(x => x.Id == id).Include(x => x.Type).Include(x => x.Location).Single();
-            /*VehicleDetailViewModel vehicleViewModel = new VehicleDetailViewModel(vehicle);
-            if (vehicleViewModel == null)
+            if (id == null || _repository.GetAllRecords() == null)
             {
                 return NotFound();
-            }*/
+            }
+            var vehicle = _repository.GetAllRecords().Where(x => x.Id == id).Include(x => x.Type).Include(x => x.Location).Single();
+            if (vehicle == null)
+            {
+                return NotFound();
+            }
             return View(_mapper.Map<VehicleDetailViewModel>(vehicle));
         }
 
@@ -105,13 +107,12 @@ namespace BikeRental.Controllers
             {
                 return NotFound();
             }
-            //var vehicleModel = new Vehicle(vehicle);
             if (ModelState.IsValid)
             {
                 try
                 {       
-                    _vehicleRepository.Edit(_mapper.Map<Vehicle>(vehicle));
-                    _vehicleRepository.Save();
+                    _repository.Edit(_mapper.Map<Vehicle>(vehicle));
+                    _repository.Save();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -132,17 +133,17 @@ namespace BikeRental.Controllers
         // GET: Vehicles/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
-            if (id == null || _vehicleRepository.GetAllRecords() == null)
+            if (id == null || _repository.GetAllRecords() == null)
             {
                 return NotFound();
             }
 
-            var vehicle = _vehicleRepository.GetAllRecords().Where(x => x.Id == id).Include(x => x.Type).Include(x => x.Location).Single();
-            /*VehicleDetailViewModel vehicleViewModel = new VehicleDetailViewModel(vehicle);
-            if (vehicleViewModel == null)
+            var vehicle = _repository.GetAllRecords().Where(x => x.Id == id).Include(x => x.Type).Include(x => x.Location).Single();
+
+            if (vehicle == null)
             {
                 return NotFound();
-            }*/
+            }
 
             return View(_mapper.Map<VehicleDetailViewModel>(vehicle));
         }
@@ -152,25 +153,25 @@ namespace BikeRental.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            if (_vehicleRepository.GetAllRecords() == null)
+            if (_repository.GetAllRecords() == null)
             {
                 return Problem("Entity set 'ApplicationDbContext.Vehicles'  is null.");
             }
-            var vehicle = _vehicleRepository.GetAllRecords().Include(x => x.Type).Include(x => x.Location)
-               .FirstOrDefault(m => m.Id == id);
+            var vehicle = _repository.GetAllRecords().Include(x => x.Type).Include(x => x.Location)
+                                     .FirstOrDefault(m => m.Id == id);
 
             if (vehicle != null)
             {
-                _vehicleRepository.Delete(vehicle);
+                _repository.Delete(vehicle);
             }
 
-            _vehicleRepository.Save();
+            _repository.Save();
             return RedirectToAction(nameof(Index));
         }
 
         private bool VehicleExists(Guid id)
         {
-            return (_vehicleRepository.GetAllRecords()?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_repository.GetAllRecords()?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
