@@ -26,8 +26,18 @@ namespace BikeRental.Controllers
         public VehiclesController(Services.ApplicationDbContext context, IMapper mapper)
         {
             _repository = new RepositoryService<Vehicle>(context);
-            _repository.Add(new Vehicle() { Id = Guid.NewGuid(), Manufacturer = "dasdasd", Price = 12313, Availability = true, Description = "dasdas", Image = "dasda", 
-                                   Location = new Models.Models.Location() { Name = "dasd", Id = Guid.NewGuid() }, Model = "dasdas", Type = new VehicleType() { Id = Guid.NewGuid(), Type = "fasfasf" }});
+            _repository.Add(new Vehicle()
+            {
+                Id = Guid.NewGuid(),
+                Manufacturer = "dasdasd",
+                Price = 12313,
+                Availability = true,
+                Description = "dasdas",
+                Image = "dasda",
+                Location = new Models.Models.Location() { Name = "dasd", Id = Guid.NewGuid() },
+                Model = "dasdas",
+                Type = new VehicleType() { Id = Guid.NewGuid(), Type = "fasfasf" }
+            });
             _repository.Save();
             _mapper = mapper;
         }
@@ -41,7 +51,7 @@ namespace BikeRental.Controllers
             {
                 vehiclesViewModels.Add(_mapper.Map<VehicleItemViewModel>(vehicle));
             }
-            return vehicles != null ? 
+            return vehicles != null ?
                           View(vehiclesViewModels) :
                           Problem("Entity set 'ApplicationDbContext.Vehicles'  is null.");
         }
@@ -110,7 +120,7 @@ namespace BikeRental.Controllers
             if (ModelState.IsValid)
             {
                 try
-                {       
+                {
                     _repository.Edit(_mapper.Map<Vehicle>(vehicle));
                     _repository.Save();
                 }

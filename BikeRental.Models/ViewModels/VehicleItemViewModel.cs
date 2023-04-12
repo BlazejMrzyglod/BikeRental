@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 namespace BikeRental.Models.ViewModels
 {
-    public class VehicleItemViewModel : IEntity<Guid>
+    public class VehicleItemViewModel
     {
        
         [Display(Name = "Identyfikator")]

@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace BikeRental.Models.ViewModels
 {
-    public class VehicleDetailViewModel : IEntity<Guid>
+    public class VehicleDetailViewModel
     {
         [Display(Name="Identyfikator")]
         public Guid Id { get; set; }

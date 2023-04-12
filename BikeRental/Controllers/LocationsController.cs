@@ -113,22 +113,22 @@ namespace BikeRental.Controllers
             if (ModelState.IsValid)
             {
                 try
-            {
-                _repository.Edit(_mapper.Map<Models.Models.Location>(location));
-                _repository.Save();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!LocationExists(location.Id))
                 {
-                    return NotFound();
+                    _repository.Edit(_mapper.Map<Models.Models.Location>(location));
+                    _repository.Save();
                 }
-                else
+                catch (DbUpdateConcurrencyException)
                 {
-                    throw;
+                    if (!LocationExists(location.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
                 }
-            }
-            return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index));
             }
             return View(location);
         }
