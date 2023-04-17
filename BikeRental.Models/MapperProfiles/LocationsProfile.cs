@@ -2,7 +2,7 @@
 using BikeRental.Models.Models;
 using BikeRental.Models.ViewModels;
 
-namespace BikeRental
+namespace BikeRental.Models.MapperProfiles
 {
     public class LocationsProfile : Profile
     {

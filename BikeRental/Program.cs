@@ -8,8 +8,8 @@ using Microsoft.Extensions.DependencyInjection;
 using AutoMapper;
 using BikeRental.Models.ViewModels;
 using BikeRental.Models.Models;
-using BikeRental;
 using FluentValidation.AspNetCore;
+using BikeRental.Models.MapperProfiles;
 
 /*List<VehicleDetailViewModel> vehiclesDetails = new List<VehicleDetailViewModel>()
         {
