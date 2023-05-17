@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using FluentValidation.AspNetCore;
 using BikeRental.Validation;
 using BikeRental.Models.MapperProfiles;
-
+using BikeRental.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +17,9 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<BikeRental.Services.ApplicationDbContext>();
+
 builder.Services.AddControllersWithViews().AddViewOptions(options=>options.HtmlHelperOptions.ClientValidationEnabled = true);
 
 builder.Services.AddScoped(typeof(IRepositoryService<>), typeof(RepositoryService<>));
@@ -25,7 +27,6 @@ builder.Services.AddScoped(typeof(IRepositoryService<>), typeof(RepositoryServic
 builder.Services.AddAutoMapper(typeof(VehiclesProfile), typeof(LocationsProfile));
 
 builder.Services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ReservationValidator>());
-
 
 var app = builder.Build();
 
@@ -63,4 +64,36 @@ app.MapControllerRoute(
 
 app.MapRazorPages();
 
-app.Run();
+using (var scope = app.Services.CreateScope())
+{
+    var userManager =  scope.ServiceProvider.GetService<UserManager<IdentityUser>>();
+    var roleManager = scope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
+   var createResult = userManager.CreateAsync(
+                new IdentityUser()
+                {
+                    UserName = "admin@ath.eu",
+                    Email = "admin@ath.eu",
+                    LockoutEnabled = false,
+                    AccessFailedCount = 0,
+                }, "Az123456$");
+
+            if (roleManager != null)
+            {
+                if (!roleManager.RoleExistsAsync("Administrators").Result)
+                    roleManager.CreateAsync(new IdentityRole()
+                    {
+                        Name = "Administrators"
+                    });
+
+                var adminUser = userManager.FindByNameAsync("admin@ath.eu").Result;
+
+                var code = userManager.GenerateEmailConfirmationTokenAsync(adminUser).Result;
+                // code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+                var result = userManager.ConfirmEmailAsync(adminUser, code).Result;
+
+                userManager.AddToRoleAsync(adminUser, "Administrators");
+            }
+}
+
+    app.Run();

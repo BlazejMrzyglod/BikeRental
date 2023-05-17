@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using BikeRental.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace BikeRental.Data
 {
