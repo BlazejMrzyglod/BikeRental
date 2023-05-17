@@ -2,13 +2,8 @@ using BikeRental.Services.Repository.EntityFramework;
 using BikeRental.Services.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using BikeRental.Models;
-using BikeRental.Data;
-using Microsoft.Extensions.DependencyInjection;
-using AutoMapper;
-using BikeRental.Models.ViewModels;
-using BikeRental.Models.Models;
 using FluentValidation.AspNetCore;
+using BikeRental.Validation;
 using BikeRental.Models.MapperProfiles;
 
 

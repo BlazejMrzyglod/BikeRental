@@ -1,12 +1,7 @@
 ﻿using BikeRental.Models.Models;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BikeRental.Models
+namespace BikeRental.Validation
 {
     public class ReservationValidator : AbstractValidator<Reservation>
     {
