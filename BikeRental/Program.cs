@@ -82,17 +82,27 @@ using (var scope = app.Services.CreateScope())
                 if (!roleManager.RoleExistsAsync("Administrators").Result)
                     roleManager.CreateAsync(new IdentityRole()
                     {
-                        Name = "Administrators"
+                        Name = "Administrator"
                     });
+        if (!roleManager.RoleExistsAsync("Operator").Result)
+            roleManager.CreateAsync(new IdentityRole()
+            {
+                Name = "Operator"
+            });
+        if (!roleManager.RoleExistsAsync("U¿ytkownik").Result)
+            roleManager.CreateAsync(new IdentityRole()
+            {
+                Name = "U¿ytkownik"
+            });
 
-                var adminUser = userManager.FindByNameAsync("admin@ath.eu").Result;
+        var adminUser = userManager.FindByNameAsync("admin@ath.eu").Result;
 
                 var code = userManager.GenerateEmailConfirmationTokenAsync(adminUser).Result;
                 // code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
 
                 var result = userManager.ConfirmEmailAsync(adminUser, code).Result;
 
-                userManager.AddToRoleAsync(adminUser, "Administrators");
+                userManager.AddToRoleAsync(adminUser, "Administrator");
             }
 }
 
