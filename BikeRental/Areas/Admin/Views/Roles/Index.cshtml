@@ -1,22 +1,26 @@
 ﻿@model IEnumerable<dynamic>
-<div>
-<h2>User Roles</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>User Name</th>
-            <th>Roles</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var user in Model)
-        {
-            <tr>
-                <td>@user.UserName</td>
-                <td>@string.Join(", ", user.Role)</td>
-            </tr>
-        }
-    </tbody>
-</table>
+@{
+	ViewData["Title"] = "Role użytkowników";
+}
+<div class="text-center">
+	<h2>User Roles</h2>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th>User Name</th>
+				<th>Roles</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (var user in Model)
+			{
+				<tr>
+					<td>@user.UserName</td>
+					<td>@string.Join(", ", user.Role)</td>
+				</tr>
+			}
+		</tbody>
+	</table>
 </div>
