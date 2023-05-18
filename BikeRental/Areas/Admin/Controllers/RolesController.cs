@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+
 
 namespace BikeRental.Areas.Admin.Controllers
 {
@@ -7,11 +9,9 @@ namespace BikeRental.Areas.Admin.Controllers
     public class RolesController : Controller
     {
         private UserManager<IdentityUser> _userManager;
-        private RoleManager<IdentityRole> _roleManager;
-        public RolesController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager) 
+        public RolesController(UserManager<IdentityUser> userManager) 
         {
             _userManager = userManager;
-            _roleManager = roleManager;
         }
         // GET: RolesController
         public ActionResult Index()
