@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-
+using BikeRental.Models.Models;
+using AutoMapper;
+using BikeRental.Models.ViewModels;
 
 namespace BikeRental.Areas.Admin.Controllers
 {
@@ -9,20 +11,22 @@ namespace BikeRental.Areas.Admin.Controllers
     public class RolesController : Controller
     {
         private UserManager<IdentityUser> _userManager;
-        public RolesController(UserManager<IdentityUser> userManager) 
+		private readonly IMapper _mapper;
+		public RolesController(UserManager<IdentityUser> userManager, IMapper mapper) 
         {
             _userManager = userManager;
+            _mapper = mapper;
         }
         // GET: RolesController
         public ActionResult Index()
         {
             var users = _userManager.Users;
-            var usersWithRoles = users.Select(user => new
-            {
-                UserName = user.UserName,
-                Role = _userManager.GetRolesAsync(user).Result.FirstOrDefault()
-            });
-            return View(usersWithRoles);
+			List<RoleViewModel> usersWithRoles = new List<RoleViewModel>();
+			foreach (var user in users)
+			{
+				usersWithRoles.Add(_mapper.Map<RoleViewModel>(user));
+			}
+			return View(usersWithRoles);
         }
 
     }
