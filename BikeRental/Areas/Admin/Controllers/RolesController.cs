@@ -6,11 +6,14 @@ using AutoMapper;
 using BikeRental.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol.Core.Types;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace BikeRental.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class RolesController : Controller
+	[Authorize(Roles = "Administrator")]
+	public class RolesController : Controller
     {
         private UserManager<IdentityUser> _userManager;
         private readonly IMapper _mapper;
