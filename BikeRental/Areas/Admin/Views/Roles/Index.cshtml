@@ -1,33 +1,28 @@
 ﻿@model IEnumerable<BikeRental.Models.ViewModels.RoleViewModel>
 
 @{
-    ViewData["Title"] = "Role użytkowników";
+	ViewData["Title"] = "Role użytkowników";
 }
 
 <h1>Role użytkowników</h1>
 
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.userName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.role)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.userName)
-                </td>
-                <td>
-                    @Html.DropDownListFor(modelItem => item.role, item.selectListRoles, new {@class ="form-control"})
-                </td>
-            </tr>
-        }
-    </tbody>
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.userName)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.role)
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		
+		@foreach (var item in Model)
+		{
+			<partial name="_RolePartial" model=item/>		
+		}
+
+	</tbody>
 </table>

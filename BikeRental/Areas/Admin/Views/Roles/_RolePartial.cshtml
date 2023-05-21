@@ -1,0 +1,15 @@
+﻿@model BikeRental.Models.ViewModels.RoleViewModel
+<form asp-action="Index">
+<tr>
+	<td class="form-group">
+			<input asp-for="userName" class="form-control" readonly="readonly"/>
+	</td>
+	<td class="form-group">
+		@Html.DropDownListFor(modelItem => Model.role, Model.selectListRoles, new {@class ="form-control"})
+	</td>
+
+	<td class="form-group">
+		<input type="submit" value="Zatwierdź" class="btn btn-primary" />
+	</td>
+</tr>
+</form>
