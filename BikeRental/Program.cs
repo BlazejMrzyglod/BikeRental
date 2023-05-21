@@ -6,31 +6,6 @@ using FluentValidation.AspNetCore;
 using BikeRental.Models.MapperProfiles;
 using BikeRental.Validation;
 
-/*List<VehicleDetailViewModel> vehiclesDetails = new List<VehicleDetailViewModel>()
-        {
-            new VehicleDetailViewModel(){Id = 1, Manufacturer = "safdasfasf", Availability = true, Description = "fadsfdsafasdf", Location = "cdsjfbasdjf", Model = "dasfafasf", Price = 1234 },
-            new VehicleDetailViewModel(){Id = 2, Manufacturer = "dwa", Availability = true, Description = "fadsfdsafasdf", Location = "cdsjfbasdjf", Model = "dasfafasf", Price = 1234 },
-            new VehicleDetailViewModel(){Id = 3, Manufacturer = "trzy", Availability = true, Description = "fadsfdsafasdf", Location = "cdsjfbasdjf", Model = "dasfafasf", Price = 1234 },
-        };
-List<VehicleItemViewModel> vehicles = new List<VehicleItemViewModel>()
-        {
-            new VehicleItemViewModel() { Id = 1, Availability = true, Name = "jeden", Price = 1234 },
-            new VehicleItemViewModel() { Id = 2, Availability = true, Name = "dwa", Price = 1234 },
-            new VehicleItemViewModel() { Id = 3, Availability = true, Name = "trzy", Price = 1234 },
-        };*/
-
-/*var configuration = new MapperConfiguration(cfg =>
-{
-    cfg.CreateMap<Location, LocationViewModel>();
-    cfg.CreateMap<LocationViewModel, Location>().ForMember(dest => dest.Vehicles, opt => opt.Ignore());
-    cfg.CreateMap<Vehicle, VehicleDetailViewModel>();
-    cfg.CreateMap<VehicleDetailViewModel, Vehicle>().ForMember(dest => dest.Location, opt => opt.Ignore()).ForMember(dest => dest.LocationId, opt => opt.Ignore()).ForMember(dest => dest.TypeId, opt => opt.Ignore()).ForMember(dest => dest.Type, opt => opt.Ignore()).ForMember(dest => dest.ReservationId, opt => opt.Ignore()).ForMember(dest => dest.Reservation, opt => opt.Ignore());
-    cfg.CreateMap<Vehicle, VehicleItemViewModel>().ForMember(dest => dest.Name, opt => opt.MapFrom(x => x.Manufacturer + ' ' + x.Model));
-});
-//only fo development
-configuration.AssertConfigurationIsValid();*/
-
-//var mapper = configuration.CreateMapper();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,7 +23,7 @@ builder.Services.AddControllersWithViews().AddViewOptions(options=>options.HtmlH
 
 builder.Services.AddScoped(typeof(IRepositoryService<>), typeof(RepositoryService<>));
 
-builder.Services.AddAutoMapper(typeof(VehiclesProfile), typeof(LocationsProfile));
+builder.Services.AddAutoMapper(typeof(VehiclesProfile), typeof(LocationsProfile), typeof(RolesProfile));
 
 builder.Services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ReservationValidator>());
 
