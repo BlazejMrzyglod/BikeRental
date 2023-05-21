@@ -25,7 +25,7 @@
                     @Html.DisplayFor(modelItem => item.userName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.role)
+                    @Html.DropDownListFor(modelItem => item.role, item.selectListRoles, new {@class ="form-control"})
                 </td>
             </tr>
         }

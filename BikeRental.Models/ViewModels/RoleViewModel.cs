@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -17,5 +18,7 @@ namespace BikeRental.Models.ViewModels
 		[Required]
 		[Display(Name = "Rola")]
 		public string role { get; set; }
+
+		public SelectList selectListRoles { get; set; }
     }
 }
