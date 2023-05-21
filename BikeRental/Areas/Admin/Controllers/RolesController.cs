@@ -15,7 +15,7 @@ namespace BikeRental.Areas.Admin.Controllers
 	[Authorize(Roles = "Administrator")]
 	public class RolesController : Controller
     {
-        private UserManager<IdentityUser> _userManager;
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly IMapper _mapper;
         public RolesController(UserManager<IdentityUser> userManager, IMapper mapper)
         {
@@ -26,7 +26,7 @@ namespace BikeRental.Areas.Admin.Controllers
         public ActionResult Index()
         {
             var users = _userManager.Users;
-            List<RoleViewModel> usersWithRoles = new List<RoleViewModel>();
+            List<RoleViewModel> usersWithRoles = new();
             foreach (var user in users)
             {
                 usersWithRoles.Add(_mapper.Map<RoleViewModel>(user));
@@ -36,14 +36,14 @@ namespace BikeRental.Areas.Admin.Controllers
         //POST: RolesController
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index([Bind("userName, role")] RoleViewModel user)
+        public async Task<IActionResult> Index([Bind("UserName, Role")] RoleViewModel user)
         {
-                var result = _userManager.FindByNameAsync(user.userName).Result;
+                var result = _userManager.FindByNameAsync(user.UserName).Result;
                 var role = _userManager.GetRolesAsync(result).Result.FirstOrDefault();
-                if (role != user.role)
+                if (role != user.Role)
                 {
                     _userManager.RemoveFromRoleAsync(result, role);
-                    _userManager.AddToRoleAsync(result, user.role);
+                    _userManager.AddToRoleAsync(result, user.Role);
                 }
             
             return RedirectToAction(nameof(Index));

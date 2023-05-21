@@ -46,7 +46,7 @@ namespace BikeRental.Controllers
         public async Task<IActionResult> Index()
         {
             var vehicles = _repository.GetAllRecords();
-            List<VehicleItemViewModel> vehiclesViewModels = new List<VehicleItemViewModel>();
+            List<VehicleItemViewModel> vehiclesViewModels = new();
             foreach (var vehicle in vehicles)
             {
                 vehiclesViewModels.Add(_mapper.Map<VehicleItemViewModel>(vehicle));

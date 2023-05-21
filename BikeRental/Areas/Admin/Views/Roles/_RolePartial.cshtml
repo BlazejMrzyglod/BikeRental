@@ -2,10 +2,10 @@
 <form asp-action="Index">
 <tr>
 	<td class="form-group">
-			<input asp-for="userName" class="form-control" readonly="readonly"/>
+			<input asp-for="UserName" class="form-control" readonly="readonly"/>
 	</td>
 	<td class="form-group">
-		@Html.DropDownListFor(modelItem => Model.role, Model.selectListRoles, new {@class ="form-control"})
+		@Html.DropDownListFor(modelItem => Model.Role, Model.SelectListRoles, new {@class ="form-control"})
 	</td>
 
 	<td class="form-group">

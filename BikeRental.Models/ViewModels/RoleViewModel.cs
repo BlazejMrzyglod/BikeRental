@@ -13,12 +13,12 @@ namespace BikeRental.Models.ViewModels
 	{
 		[Required]
 		[Display(Name = "Nazwa użytkownika")]
-		public string userName { get; set; }
+		public string UserName { get; set; }
 
 		[Required]
 		[Display(Name = "Rola")]
-		public string role { get; set; }
+		public string Role { get; set; }
 
-		public SelectList selectListRoles { get; set; }
+		public SelectList SelectListRoles { get; set; }
     }
 }
