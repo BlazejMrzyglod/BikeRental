@@ -13,12 +13,14 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<BikeRental.Services.ApplicationDbContext>(options =>
     options.UseInMemoryDatabase("test"));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<BikeRental.Services.ApplicationDbContext>();
+
 builder.Services.AddControllersWithViews().AddViewOptions(options=>options.HtmlHelperOptions.ClientValidationEnabled = true);
 
 builder.Services.AddScoped(typeof(IRepositoryService<>), typeof(RepositoryService<>));
