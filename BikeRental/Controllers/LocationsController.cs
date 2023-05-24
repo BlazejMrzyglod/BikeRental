@@ -23,7 +23,6 @@ namespace BikeRental.Controllers
         public LocationsController(Services.ApplicationDbContext context, IMapper mapper)
         {
             _repository = new RepositoryService<Models.Models.Location>(context);
-            _repository.Add(new Models.Models.Location() { Name = "dasd", Id = Guid.NewGuid() });
             _mapper = mapper;
         }
 

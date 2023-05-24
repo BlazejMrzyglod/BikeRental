@@ -26,19 +26,6 @@ namespace BikeRental.Controllers
         public VehiclesController(Services.ApplicationDbContext context, IMapper mapper)
         {
             _repository = new RepositoryService<Vehicle>(context);
-            _repository.Add(new Vehicle()
-            {
-                Id = Guid.NewGuid(),
-                Manufacturer = "dasdasd",
-                Price = 12313,
-                Availability = true,
-                Description = "dasdas",
-                Image = "dasda",
-                Location = new Models.Models.Location() { Name = "dasd", Id = Guid.NewGuid() },
-                Model = "dasdas",
-                Type = new VehicleType() { Id = Guid.NewGuid(), Name = "fasfasf" }
-            });
-            _repository.Save();
             _mapper = mapper;
         }
 
