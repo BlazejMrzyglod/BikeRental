@@ -25,8 +25,14 @@ namespace BikeRental.Models.ViewModels
         public int Price { get; set;}
 
         [Required]
+        public Guid LocationId { get; set; }
+
+        [Required]
         [Display(Name = "Lokacja")]
         public string Location { get; set; }
+
+        [Required]
+        public Guid TypeId { get; set; }
 
         [Required]
         [Display(Name = "Typ")]
@@ -44,6 +50,8 @@ namespace BikeRental.Models.ViewModels
         [Required]
         [Display(Name = "Zdjęcie")]
         public string Image { get; set; }
+
+        public int? ReservationId { get; set; }
 
     }
 }
