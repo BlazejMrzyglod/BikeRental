@@ -124,7 +124,7 @@ namespace BikeRental.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(_mapper.Map<Vehicle>(vehicle));
+            return View(vehicle);
         }
 
         // GET: Vehicles/Delete/5
