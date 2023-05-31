@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BikeRental.Models
 using BikeRental.Models.Models;
 using BikeRental.Models.ViewModels;
 using System;
@@ -15,7 +14,7 @@ namespace BikeRental.Models.MapperProfiles
         public ReservationsProfile() 
         {
             CreateMap<Reservation, ReservationViewModel>();
-            CreateMap<ReservationViewModel, Reservation>().ForMember(dest => dest.User, opt => opt.MapFrom<ReservationResolver>());
+            CreateMap<ReservationViewModel, Reservation>();
         }
     }
 }

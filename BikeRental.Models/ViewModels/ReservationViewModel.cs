@@ -20,6 +20,8 @@ namespace BikeRental.Models.ViewModels
         [Required]
         [DisplayName("Data końcowa")]
         public DateTime EndDate { get; set; }
+        [Required]
+        public string User { get; set; }
         public bool? IsActive { get; set; }
         [Required]
         [DisplayName("Rowery")]
