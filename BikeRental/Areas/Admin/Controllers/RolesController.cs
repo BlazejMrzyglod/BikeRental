@@ -42,8 +42,8 @@ namespace BikeRental.Areas.Admin.Controllers
                 var role = _userManager.GetRolesAsync(result).Result.FirstOrDefault();
                 if (role != user.Role)
                 {
-                    _userManager.RemoveFromRoleAsync(result, role);
-                    _userManager.AddToRoleAsync(result, user.Role);
+                    await _userManager.RemoveFromRoleAsync(result, role);
+                    await _userManager.AddToRoleAsync(result, user.Role);
                 }
             
             return RedirectToAction(nameof(Index));

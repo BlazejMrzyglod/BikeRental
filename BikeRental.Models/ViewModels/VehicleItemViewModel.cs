@@ -13,7 +13,7 @@ namespace BikeRental.Models.ViewModels
 
         [Required]
         [Display(Name = "Nazwa")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         [Required]
         [Display(Name = "Cena")]
@@ -25,7 +25,7 @@ namespace BikeRental.Models.ViewModels
 
         [Required]
         [Display(Name = "Zdjęcie")]
-        public string Image { get; set; }
+        public string? Image { get; set; }
 
     }
 }

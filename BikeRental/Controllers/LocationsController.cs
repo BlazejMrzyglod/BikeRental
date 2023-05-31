@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BikeRental.Services.Data;
-using BikeRental.Models.Models;
 using BikeRental.Services.Repository;
 using BikeRental.Services.Repository.EntityFramework;
 using BikeRental.Models.ViewModels;
 using AutoMapper;
 using Microsoft.CodeAnalysis;
-using BikeRental.Services.Data;
 
 namespace BikeRental.Controllers
 {
@@ -28,10 +21,10 @@ namespace BikeRental.Controllers
         }
 
         // GET: Locations
-        public async Task<IActionResult> Index()
+        public ActionResult Index()
         {
             var locations = _repository.GetAllRecords();
-            List<LocationViewModel> locationViewModels = new List<LocationViewModel>();
+            List<LocationViewModel> locationViewModels = new();
             foreach (var location in locations)
             {
                 locationViewModels.Add(_mapper.Map<LocationViewModel>(location));
@@ -42,7 +35,7 @@ namespace BikeRental.Controllers
         }
 
         // GET: Locations/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public ActionResult Details(Guid? id)
         {
             if (id == null || _repository.GetAllRecords() == null)
             {
@@ -70,7 +63,7 @@ namespace BikeRental.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name")] LocationViewModel location)
+        public ActionResult Create([Bind("Name")] LocationViewModel location)
         {
             if (ModelState.IsValid)
             {
@@ -83,9 +76,9 @@ namespace BikeRental.Controllers
         }
 
         // GET: Locations/Edit/5
-        public async Task<IActionResult> Edit(Guid id)
+        public ActionResult Edit(Guid id)
         {
-            if (id == null || _repository.GetAllRecords() == null)
+            if (_repository.GetAllRecords() == null)
             {
                 return NotFound();
             }
@@ -103,7 +96,7 @@ namespace BikeRental.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name")] LocationViewModel location)
+        public ActionResult Edit(Guid id, [Bind("Id,Name")] LocationViewModel location)
         {
             if (id != location.Id)
             {
@@ -134,7 +127,7 @@ namespace BikeRental.Controllers
         }
 
         // GET: Locations/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public ActionResult Delete(Guid? id)
         {
             if (id == null || _repository.GetAllRecords() == null)
             {
@@ -154,7 +147,7 @@ namespace BikeRental.Controllers
         // POST: Locations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public ActionResult DeleteConfirmed(Guid id)
         {
             if (_repository.GetAllRecords() == null)
             {

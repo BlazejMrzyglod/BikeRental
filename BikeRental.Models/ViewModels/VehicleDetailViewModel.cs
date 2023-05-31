@@ -13,12 +13,12 @@ namespace BikeRental.Models.ViewModels
         [Required]
         [StringLength(100)]
         [Display(Name="Producent")]
-        public string Manufacturer { get; set; }
+        public string? Manufacturer { get; set; }
 
         [Required]
         [StringLength(100)]
         [Display(Name="Model")]
-        public string Model { get; set; }
+        public string? Model { get; set; }
 
         [Required]
         [Display(Name = "Cena")]
@@ -29,14 +29,14 @@ namespace BikeRental.Models.ViewModels
 
         [Required]
         [Display(Name = "Lokacja")]
-        public string Location { get; set; }
+        public string? Location { get; set; }
 
         [Required]
         public Guid TypeId { get; set; }
 
         [Required]
         [Display(Name = "Typ")]
-        public string Type { get; set; }
+        public string? Type { get; set; }
 
         [Required]
         [Display(Name = "Dostępność")]
@@ -45,11 +45,11 @@ namespace BikeRental.Models.ViewModels
         [Required]
         [StringLength(1000)]
         [Display(Name = "Opis")]
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [Required]
         [Display(Name = "Zdjęcie")]
-        public string Image { get; set; }
+        public string? Image { get; set; }
 
     }
 }

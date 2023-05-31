@@ -22,7 +22,7 @@ namespace BikeRental.Models.ViewModels
         [DisplayName("Data końcowa")]
         public DateTime EndDate { get; set; }
         [Required]
-        public string User { get; set; }
+        public string? User { get; set; }
         public bool? IsActive { get; set; }
         [Required]
         public Guid? VehicleId { get; set; }
