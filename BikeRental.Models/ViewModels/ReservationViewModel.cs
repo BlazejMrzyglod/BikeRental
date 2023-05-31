@@ -13,16 +13,14 @@ namespace BikeRental.Models.ViewModels
     {
         [Required]
         public Guid Id { get; set; }
-        [Required]
-        public DateTime ReservationDate { get; set; }
+        public DateTime? ReservationDate { get; set; }
         [Required]
         [DisplayName("Data początkowa")]
         public DateTime StartDate { get; set; }
         [Required]
         [DisplayName("Data końcowa")]
         public DateTime EndDate { get; set; }
-        [Required]
-        public bool IsActive { get; set; }
+        public bool? IsActive { get; set; }
         [Required]
         [DisplayName("Rowery")]
         public ICollection<Vehicle> Vehicles { get; set; }
