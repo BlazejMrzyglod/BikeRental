@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Index</h1>
@@ -62,7 +61,7 @@
                 @Html.DisplayFor(modelItem => item.VehicleId)
             </td>
             <td>
-                @Html.ActionLink("Edytuj", "Edit", new {  id=item.Id  })
+                @Html.ActionLink("Zmień status", "Edit", new {  id=item.Id  })
             </td>
         </tr>
 }
