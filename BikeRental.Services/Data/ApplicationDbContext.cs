@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using BikeRental.Models;
 
-namespace BikeRental.Services
+namespace BikeRental.Services.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {

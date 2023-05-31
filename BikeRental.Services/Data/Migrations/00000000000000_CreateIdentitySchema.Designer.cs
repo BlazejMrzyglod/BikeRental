@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 
-namespace BikeRental.Data.Migrations
+namespace BikeRental.Services.Data.Migrations
 {
     [DbContext(typeof(Microsoft.EntityFrameworkCore.DbContext))]
     [Migration("00000000000000_CreateIdentitySchema")]

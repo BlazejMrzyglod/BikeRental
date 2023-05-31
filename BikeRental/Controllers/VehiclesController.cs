@@ -9,12 +9,12 @@ using BikeRental.Models.Models;
 using BikeRental.Services.Repository;
 using BikeRental.Services.Repository.EntityFramework;
 using BikeRental.Models;
-using BikeRental.Services;
-using BikeRental.Data;
+using BikeRental.Services.Data;
 using BikeRental.Models.ViewModels;
 using AutoMapper;
 using Microsoft.CodeAnalysis;
 using NuGet.Protocol.Core.Types;
+using BikeRental.Services.Data;
 
 namespace BikeRental.Controllers
 {
@@ -23,7 +23,7 @@ namespace BikeRental.Controllers
         private readonly IRepositoryService<Vehicle> _repository;
         private readonly IMapper _mapper;
 
-        public VehiclesController(Services.ApplicationDbContext context, IMapper mapper)
+        public VehiclesController(ApplicationDbContext context, IMapper mapper)
         {
             _repository = new RepositoryService<Vehicle>(context);
             _mapper = mapper;

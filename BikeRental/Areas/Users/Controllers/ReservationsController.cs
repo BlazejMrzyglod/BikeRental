@@ -4,15 +4,16 @@ using BikeRental.Services.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using BikeRental.Models.ViewModels;
+using BikeRental.Services.Data;
 
 namespace BikeRental.Areas.Users.Controllers
 {
-	public class ReservationsController : Controller
+    public class ReservationsController : Controller
 	{
         private readonly IRepositoryService<Models.Models.Reservation> _repository;
         private readonly IMapper _mapper;
 
-        public ReservationsController(Services.ApplicationDbContext context, IMapper mapper)
+        public ReservationsController(ApplicationDbContext context, IMapper mapper)
         {
             _repository = new RepositoryService<Models.Models.Reservation>(context);
             _mapper = mapper;

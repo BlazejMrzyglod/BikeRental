@@ -5,13 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using BikeRental.Data;
+using BikeRental.Services.Data;
 using BikeRental.Models.Models;
 using BikeRental.Services.Repository;
 using BikeRental.Services.Repository.EntityFramework;
 using BikeRental.Models.ViewModels;
 using AutoMapper;
 using Microsoft.CodeAnalysis;
+using BikeRental.Services.Data;
 
 namespace BikeRental.Controllers
 {
@@ -20,7 +21,7 @@ namespace BikeRental.Controllers
         private readonly IRepositoryService<Models.Models.Location> _repository;
         private readonly IMapper _mapper;
 
-        public LocationsController(Services.ApplicationDbContext context, IMapper mapper)
+        public LocationsController(ApplicationDbContext context, IMapper mapper)
         {
             _repository = new RepositoryService<Models.Models.Location>(context);
             _mapper = mapper;

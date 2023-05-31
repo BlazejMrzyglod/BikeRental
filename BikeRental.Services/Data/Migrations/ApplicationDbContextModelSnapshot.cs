@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 
-namespace BikeRental.Data.Migrations
+namespace BikeRental.Services.Data.Migrations
 {
     [DbContext(typeof(Microsoft.EntityFrameworkCore.DbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
