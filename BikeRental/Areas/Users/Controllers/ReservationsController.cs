@@ -26,7 +26,7 @@ namespace BikeRental.Areas.Users.Controllers
         // POST: ReservationsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index([Bind("ReservationDate,StartDate,EndDate,IsActive,Vehicles")] ReservationViewModel reservation)
+        public async Task<IActionResult> Index([Bind("ReservationDate,StartDate,EndDate,IsActive,User,Vehicles")] ReservationViewModel reservation)
         {
             if (ModelState.IsValid)
             {
