@@ -26,7 +26,7 @@ builder.Services.AddControllersWithViews().AddViewOptions(options=>options.HtmlH
 
 builder.Services.AddScoped(typeof(IRepositoryService<>), typeof(RepositoryService<>));
 
-builder.Services.AddAutoMapper(typeof(VehiclesProfile), typeof(LocationsProfile), typeof(RolesProfile));
+builder.Services.AddAutoMapper(typeof(VehiclesProfile), typeof(LocationsProfile), typeof(RolesProfile), typeof(ReservationsProfile));
 
 builder.Services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ReservationValidator>());
 
