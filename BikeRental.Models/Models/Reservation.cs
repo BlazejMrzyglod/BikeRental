@@ -13,6 +13,7 @@ namespace BikeRental.Models.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public bool IsActive { get; set; }
+        public string User { get; set; }
         public virtual ICollection<Vehicle> Vehicles { get; set; }
     }
 }
