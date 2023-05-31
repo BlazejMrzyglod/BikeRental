@@ -7,6 +7,7 @@ using BikeRental.Models.MapperProfiles;
 using BikeRental.Validation;
 using BikeRental.Models.Models;
 using BikeRental.Services.Data;
+using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,13 +23,15 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
-builder.Services.AddControllersWithViews().AddViewOptions(options=>options.HtmlHelperOptions.ClientValidationEnabled = true);
+builder.Services.AddControllersWithViews().AddViewOptions(options => options.HtmlHelperOptions.ClientValidationEnabled = true);
 
 builder.Services.AddScoped(typeof(IRepositoryService<>), typeof(RepositoryService<>));
 
 builder.Services.AddAutoMapper(typeof(VehiclesProfile), typeof(LocationsProfile), typeof(RolesProfile), typeof(ReservationsProfile));
 
-builder.Services.AddMvc().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ReservationValidator>());
+builder.Services.AddMvc();
+
+builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters().AddValidatorsFromAssemblyContaining<ReservationValidator>();
 
 
 var app = builder.Build();
@@ -72,33 +75,35 @@ using (var scope = app.Services.CreateScope())
     var userManager = scope.ServiceProvider.GetService<UserManager<IdentityUser>>();
     var roleManager = scope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
 
-    var createResult = userManager.CreateAsync(
-                 new IdentityUser()
-                 {
-                     UserName = "admin@ath.eu",
-                     Email = "admin@ath.eu",
-                     LockoutEnabled = false,
-                     AccessFailedCount = 0,
-                 }, "Az123456$");
-
-    if (roleManager != null)
+    if (userManager != null)
     {
-        if (!roleManager.RoleExistsAsync("Administrators").Result)
-            roleManager.CreateAsync(new IdentityRole()
-            {
-                Name = "Administrator"
-            });
-        if (!roleManager.RoleExistsAsync("Operator").Result)
-            roleManager.CreateAsync(new IdentityRole()
-            {
-                Name = "Operator"
-            });
-        if (!roleManager.RoleExistsAsync("U¿ytkownik").Result)
-            roleManager.CreateAsync(new IdentityRole()
-            {
-                Name = "U¿ytkownik"
-            });
+        var createResult = userManager.CreateAsync(
+                     new IdentityUser()
+                     {
+                         UserName = "admin@ath.eu",
+                         Email = "admin@ath.eu",
+                         LockoutEnabled = false,
+                         AccessFailedCount = 0,
+                     }, "Az123456$");
 
+        if (roleManager != null)
+        {
+            if (!roleManager.RoleExistsAsync("Administrators").Result)
+                roleManager.CreateAsync(new IdentityRole()
+                {
+                    Name = "Administrator"
+                });
+            if (!roleManager.RoleExistsAsync("Operator").Result)
+                roleManager.CreateAsync(new IdentityRole()
+                {
+                    Name = "Operator"
+                });
+            if (!roleManager.RoleExistsAsync("U¿ytkownik").Result)
+                roleManager.CreateAsync(new IdentityRole()
+                {
+                    Name = "U¿ytkownik"
+                });
+        }
         var adminUser = userManager.FindByNameAsync("admin@ath.eu").Result;
 
         var code = userManager.GenerateEmailConfirmationTokenAsync(adminUser).Result;
@@ -107,36 +112,43 @@ using (var scope = app.Services.CreateScope())
         var result = userManager.ConfirmEmailAsync(adminUser, code).Result;
 
         userManager.AddToRoleAsync(adminUser, "Administrator");
+    }
+    var vehiclesRepository = scope.ServiceProvider.GetService<IRepositoryService<Vehicle>>();
+    var vehicleTypesRepository = scope.ServiceProvider.GetService<IRepositoryService<VehicleType>>();
+    var locationsRepository = scope.ServiceProvider.GetService<IRepositoryService<Location>>();
+    var reservationsRepository = scope.ServiceProvider.GetService<IRepositoryService<Reservation>>();
 
-        var vehiclesRepository = scope.ServiceProvider.GetService<IRepositoryService<Vehicle>>();
-		var vehicleTypesRepository = scope.ServiceProvider.GetService<IRepositoryService<VehicleType>>();
-		var locationsRepository = scope.ServiceProvider.GetService<IRepositoryService<Location>>();
-		var reservationsRepository = scope.ServiceProvider.GetService<IRepositoryService<Reservation>>();
-
-		Guid ulicznyGuid = Guid.NewGuid();
-		Guid gorskiGuid = Guid.NewGuid();
-		Guid hybrydaGuid = Guid.NewGuid();
-		Guid bmxGuid = Guid.NewGuid();
-		Guid skladanyGuid = Guid.NewGuid();
-		Guid turystycznyGuid = Guid.NewGuid();
-		Guid elektrycznyGuid = Guid.NewGuid();
-		vehicleTypesRepository.Add(new VehicleType { Id = ulicznyGuid, Name = "Uliczny" });
-		vehicleTypesRepository.Add(new VehicleType { Id = gorskiGuid, Name = "Górski" });
-		vehicleTypesRepository.Add(new VehicleType { Id = hybrydaGuid, Name = "Hybryda" });
-		vehicleTypesRepository.Add(new VehicleType { Id = bmxGuid, Name = "BMX" });
-		vehicleTypesRepository.Add(new VehicleType { Id = skladanyGuid, Name = "Sk³adany" });
-		vehicleTypesRepository.Add(new VehicleType { Id = turystycznyGuid, Name = "Turystyczny" });
-		vehicleTypesRepository.Add(new VehicleType { Id = elektrycznyGuid, Name = "Elektryczny" });
+    Guid ulicznyGuid = Guid.NewGuid();
+    Guid gorskiGuid = Guid.NewGuid();
+    Guid hybrydaGuid = Guid.NewGuid();
+    Guid bmxGuid = Guid.NewGuid();
+    Guid skladanyGuid = Guid.NewGuid();
+    Guid turystycznyGuid = Guid.NewGuid();
+    Guid elektrycznyGuid = Guid.NewGuid();
+    if (vehicleTypesRepository != null)
+    {
+        vehicleTypesRepository.Add(new VehicleType { Id = ulicznyGuid, Name = "Uliczny" });
+        vehicleTypesRepository.Add(new VehicleType { Id = gorskiGuid, Name = "Górski" });
+        vehicleTypesRepository.Add(new VehicleType { Id = hybrydaGuid, Name = "Hybryda" });
+        vehicleTypesRepository.Add(new VehicleType { Id = bmxGuid, Name = "BMX" });
+        vehicleTypesRepository.Add(new VehicleType { Id = skladanyGuid, Name = "Sk³adany" });
+        vehicleTypesRepository.Add(new VehicleType { Id = turystycznyGuid, Name = "Turystyczny" });
+        vehicleTypesRepository.Add(new VehicleType { Id = elektrycznyGuid, Name = "Elektryczny" });
         vehicleTypesRepository.Save();
-
-        Guid partyzantowGuid = Guid.NewGuid();
-		Guid willowaGuid = Guid.NewGuid();
-		Guid majaGuid = Guid.NewGuid();
-		locationsRepository.Add(new Location { Id = partyzantowGuid, Name = "Partyzantów" });
-		locationsRepository.Add(new Location { Id = willowaGuid, Name = "Willowa" });
-		locationsRepository.Add(new Location { Id = majaGuid, Name = "3 Maja" });
+    }
+    Guid partyzantowGuid = Guid.NewGuid();
+    Guid willowaGuid = Guid.NewGuid();
+    Guid majaGuid = Guid.NewGuid();
+    if (locationsRepository != null)
+    {
+        locationsRepository.Add(new Location { Id = partyzantowGuid, Name = "Partyzantów" });
+        locationsRepository.Add(new Location { Id = willowaGuid, Name = "Willowa" });
+        locationsRepository.Add(new Location { Id = majaGuid, Name = "3 Maja" });
         locationsRepository.Save();
+    }
 
+    if (vehiclesRepository != null)
+    {
         vehiclesRepository.Add(new Vehicle
         {
             Id = Guid.NewGuid(),
@@ -149,6 +161,7 @@ using (var scope = app.Services.CreateScope())
             Image = "fx3.jpg",
             TypeId = hybrydaGuid,
         });
+
         vehiclesRepository.Add(new Vehicle
         {
             Id = Guid.NewGuid(),
@@ -258,7 +271,8 @@ using (var scope = app.Services.CreateScope())
             TypeId = gorskiGuid,
         });
         vehiclesRepository.Save();
-	}
+    }
+
 }
 
 app.Run();
