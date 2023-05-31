@@ -8,6 +8,7 @@ using BikeRental.Services.Data;
 
 namespace BikeRental.Areas.Users.Controllers
 {
+    [Area("Users")]
     public class ReservationsController : Controller
 	{
         private readonly IRepositoryService<Models.Models.Reservation> _repository;
@@ -27,11 +28,13 @@ namespace BikeRental.Areas.Users.Controllers
         // POST: ReservationsController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Index([Bind("ReservationDate,StartDate,EndDate,IsActive,User,Vehicles")] ReservationViewModel reservation)
+        public async Task<IActionResult> Index([Bind("StartDate,EndDate,User")] ReservationViewModel reservation)
         {
             if (ModelState.IsValid)
             {
                 reservation.Id = Guid.NewGuid();
+                reservation.ReservationDate = DateTime.Now;
+                reservation.IsActive = true;
                 _repository.Add(_mapper.Map<Models.Models.Reservation>(reservation));
                 _repository.Save();
                 return RedirectToAction(nameof(Index));
