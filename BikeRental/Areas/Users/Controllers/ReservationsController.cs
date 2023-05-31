@@ -5,10 +5,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using BikeRental.Models.ViewModels;
 using BikeRental.Services.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BikeRental.Areas.Users.Controllers
 {
     [Area("Users")]
+    [Authorize]
     public class ReservationsController : Controller
 	{
         private readonly IRepositoryService<Models.Models.Reservation> _repository;
