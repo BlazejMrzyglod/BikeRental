@@ -22,11 +22,6 @@
                 <input asp-for="EndDate" class="form-control" />
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Vehicle" class="control-label"></label>
-                <input asp-for="Vehicle" class="form-control" />
-                <span asp-validation-for="Vehicle" class="text-danger"></span>
-            </div>
             <input type="hidden" asp-for="User" value=@User.Identity?.Name />
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

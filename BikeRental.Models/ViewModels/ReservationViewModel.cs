@@ -25,7 +25,6 @@ namespace BikeRental.Models.ViewModels
         public string User { get; set; }
         public bool? IsActive { get; set; }
         [Required]
-        [DisplayName("Rower")]
-        public string Vehicle { get; set; }
+        public Guid? VehicleId { get; set; }
     }
 }
