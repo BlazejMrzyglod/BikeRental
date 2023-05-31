@@ -13,8 +13,9 @@ namespace BikeRental.Models.MapperProfiles
     {
         public ReservationsProfile() 
         {
-            CreateMap<Reservation, ReservationViewModel>();
-            CreateMap<ReservationViewModel, Reservation>();
+            CreateMap<Reservation, ReservationViewModel>().ForMember(dest => dest.Vehicle, opt => opt.MapFrom(x => x.Vehicle.Manufacturer + " " + x.Vehicle.Model + " " + x.Vehicle.Location.Name));
+            CreateMap<ReservationViewModel, Reservation>().ForMember(dest => dest.Vehicle, opt => opt.Ignore())
+                                                          .ForMember(dest => dest.VehicleId, opt => opt.Ignore());
         }
     }
 }
