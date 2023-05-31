@@ -23,7 +23,7 @@ namespace BikeRental.Models.Models
         public string Image { get; set; }
         public Guid TypeId { get; set; }
         public virtual VehicleType Type { get; set; }
-        public int? ReservationId { get; set; }
+        public Guid? ReservationId { get; set; }
         public virtual Reservation? Reservation { get; set; }
 
     }
