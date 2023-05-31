@@ -14,7 +14,5 @@ namespace BikeRental.Models.Models
         public DateTime EndDate { get; set; }
         public bool IsActive { get; set; }
         public virtual ICollection<Vehicle> Vehicles { get; set; }
-
-
     }
 }
