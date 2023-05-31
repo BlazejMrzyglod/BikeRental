@@ -14,7 +14,8 @@ namespace BikeRental.Models.Models
         public DateTime EndDate { get; set; }
         public bool IsActive { get; set; }
         public string User { get; set; }
-        public Guid? VehicleId { get; set; }
-        public virtual Vehicle Vehicle { get; set; }
+        public Guid VehicleId { get; set; }
+        public Vehicle Vehicle { get; set; }
     }
 }
+

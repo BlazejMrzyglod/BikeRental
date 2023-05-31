@@ -51,7 +51,5 @@ namespace BikeRental.Models.ViewModels
         [Display(Name = "Zdjęcie")]
         public string Image { get; set; }
 
-        public int? ReservationId { get; set; }
-
     }
 }

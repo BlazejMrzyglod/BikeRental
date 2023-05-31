@@ -19,13 +19,13 @@ namespace BikeRental.Areas.Users.Controllers
             _repository = new RepositoryService<Models.Models.Reservation>(context);
             _mapper = mapper;
         }
-        // GET: ReservationsController
-        public ActionResult Index()
+        // GET: ReservationsController/5
+        public ActionResult Index(Guid id)
 		{
 			return View();
 		}
 
-        // POST: ReservationsController/Create
+        // POST: ReservationsController/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index([Bind("StartDate,EndDate,User")] ReservationViewModel reservation)

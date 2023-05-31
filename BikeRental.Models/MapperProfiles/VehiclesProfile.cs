@@ -10,8 +10,7 @@ namespace BikeRental.Models.MapperProfiles
         {
             CreateMap<Vehicle, VehicleDetailViewModel>().ForMember(dest => dest.Location, opt => opt.MapFrom(x => x.Location.Name)).ForMember(dest => dest.Type, opt => opt.MapFrom(x => x.Type.Name));
             CreateMap<VehicleDetailViewModel, Vehicle>().ForMember(dest => dest.Location, opt => opt.Ignore())
-                                                        .ForMember(dest => dest.Type, opt => opt.Ignore())
-                                                        .ForMember(dest => dest.Reservation, opt => opt.Ignore());
+                                                        .ForMember(dest => dest.Type, opt => opt.Ignore());
             CreateMap<Vehicle, VehicleItemViewModel>().ForMember(dest => dest.Name, opt => opt.MapFrom(x => x.Manufacturer + ' ' + x.Model));
         }
     }
