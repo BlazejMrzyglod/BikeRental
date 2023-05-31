@@ -9,6 +9,12 @@ using System.Threading.Tasks;
 
 namespace BikeRental.Models.ViewModels
 {
+    public enum Status
+    {
+        Realizacja,
+        Wypożyczone,
+        Zwrócone
+    }
     public class ReservationViewModel
     {
         [Required]
@@ -22,9 +28,12 @@ namespace BikeRental.Models.ViewModels
         [DisplayName("Data końcowa")]
         public DateTime EndDate { get; set; }
         [Required]
+        [DisplayName("Użytkownik")]
         public string? User { get; set; }
-        public bool? IsActive { get; set; }
+        [DisplayName("Status")]
+        public Status Status { get; set; }
         [Required]
+        [DisplayName("Pojazd")]
         public Guid? VehicleId { get; set; }
     }
 }

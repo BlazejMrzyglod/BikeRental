@@ -40,7 +40,7 @@ namespace BikeRental.Areas.Users.Controllers
             {
                 reservation.Id = Guid.NewGuid();
                 reservation.ReservationDate = DateTime.Now;
-                reservation.IsActive = true;
+                reservation.Status = Status.Realizacja;
                 reservation.VehicleId = id;
                 _repository.Add(_mapper.Map<Models.Models.Reservation>(reservation));
                 _repository.Save();
