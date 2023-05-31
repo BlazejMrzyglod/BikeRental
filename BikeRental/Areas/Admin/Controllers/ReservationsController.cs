@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using BikeRental.Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace BikeRental.Areas.Admin.Controllers
 {
@@ -34,45 +35,17 @@ namespace BikeRental.Areas.Admin.Controllers
             return View(reservationsViewModels);
         }
 
-        // GET: ReservationsController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        
-
         // GET: ReservationsController/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(Guid id)
         {
-            return View();
+           var reservation = _repository.GetAllRecords().Where(x => x.Id == id);
+           return View(_mapper.Map<ReservationViewModel>(reservation));
         }
 
         // POST: ReservationsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: ReservationsController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: ReservationsController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
         {
             try
             {
