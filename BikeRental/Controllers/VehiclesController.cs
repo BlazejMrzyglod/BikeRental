@@ -90,7 +90,7 @@ namespace BikeRental.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Guid id, [Bind("Status")] VehicleDetailViewModel vehicle)
+        public ActionResult Edit(Guid id, [Bind("Id,Manufacturer,Model,Price,LocationId,Location,Availability,Description,Image,TypeId,Type")] VehicleDetailViewModel vehicle)
         {
             if (id != vehicle.Id)
             {
