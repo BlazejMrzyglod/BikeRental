@@ -38,22 +38,36 @@ namespace BikeRental.Areas.Admin.Controllers
         // GET: ReservationsController/Edit/5
         public ActionResult Edit(Guid id)
         {
-           var reservation = _repository.GetAllRecords().Where(x => x.Id == id);
-           return View(_mapper.Map<ReservationViewModel>(reservation));
+            var reservation = _repository.GetSingle(id);
+            return View(_mapper.Map<ReservationViewModel>(reservation));
         }
 
         // POST: ReservationsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(Guid id, [Bind("Status")] ReservationViewModel reservation)
         {
-            try
+			try
             {
-                return RedirectToAction(nameof(Index));
+                if (reservation.Status==Models.ViewModels.Status.Realizacja)
+                {
+					var _reservation = _repository.GetSingle(id);
+					_reservation.Status = Models.Models.Status.Wypożyczone;
+                    _repository.Edit(_reservation);
+                    _repository.Save();
+				}
+				if (reservation.Status == Models.ViewModels.Status.Wypożyczone)
+				{
+					var _reservation = _repository.GetSingle(id);
+					_reservation.Status = Models.Models.Status.Zwrócone;
+					_repository.Edit(_reservation);
+					_repository.Save();
+				}
+				return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return View(reservation);
             }
         }
     }
