@@ -40,17 +40,20 @@ namespace BikeRental.Areas.Users.Controllers
         {
             if (ModelState.IsValid)
             {
-                reservation.Id = Guid.NewGuid();
-                reservation.ReservationDate = DateTime.Now;
-                reservation.Status = Status.Realizacja;
-                reservation.VehicleId = id;
-                _reservationRepository.Add(_mapper.Map<Models.Models.Reservation>(reservation));
-                _reservationRepository.Save();
-                var vehicle = _vehicleRepository.GetSingle(id);
-                vehicle.Availability = false;
-                _vehicleRepository.Edit(vehicle);
-                _vehicleRepository.Save();
-                return RedirectToAction(nameof(Index));
+				var vehicle = _vehicleRepository.GetSingle(id);
+                if (vehicle.Availability)
+                {
+                    reservation.Id = Guid.NewGuid();
+                    reservation.ReservationDate = DateTime.Now;
+                    reservation.Status = Status.Realizacja;
+                    reservation.VehicleId = id;
+                    _reservationRepository.Add(_mapper.Map<Models.Models.Reservation>(reservation));
+                    _reservationRepository.Save();
+                    vehicle.Availability = false;
+                    _vehicleRepository.Edit(vehicle);
+                    _vehicleRepository.Save();
+                    return RedirectToAction(nameof(Index));
+                }
             }
             return View(reservation);
         }
