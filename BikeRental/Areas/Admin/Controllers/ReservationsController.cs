@@ -15,18 +15,20 @@ namespace BikeRental.Areas.Admin.Controllers
     [Authorize(Roles = "Administrator")]
     public class ReservationsController : Controller
     {
-        private readonly IRepositoryService<Reservation> _repository;
-        private readonly IMapper _mapper;
+        private readonly IRepositoryService<Reservation> _reservationRepository;
+		private readonly IRepositoryService<Models.Models.Vehicle> _vehicleRepository;
+		private readonly IMapper _mapper;
 
         public ReservationsController(ApplicationDbContext context, IMapper mapper)
         {
-            _repository = new RepositoryService<Reservation>(context);
-            _mapper = mapper;
+			_reservationRepository = new RepositoryService<Models.Models.Reservation>(context);
+			_vehicleRepository = new RepositoryService<Models.Models.Vehicle>(context);
+			_mapper = mapper;
         }
         // GET: ReservationsController
         public ActionResult Index()
         {
-            var reservations = _repository.GetAllRecords();
+            var reservations = _reservationRepository.GetAllRecords();
             List<ReservationViewModel> reservationsViewModels = new();
             foreach (var reservation in reservations)
             {
@@ -38,30 +40,34 @@ namespace BikeRental.Areas.Admin.Controllers
         // GET: ReservationsController/Edit/5
         public ActionResult Edit(Guid id)
         {
-            var reservation = _repository.GetSingle(id);
+            var reservation = _reservationRepository.GetSingle(id);
             return View(_mapper.Map<ReservationViewModel>(reservation));
         }
 
         // POST: ReservationsController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Guid id, [Bind("Status")] ReservationViewModel reservation)
+        public ActionResult Edit(Guid id, [Bind("VehicleId,Status")] ReservationViewModel reservation)
         {
 			try
             {
                 if (reservation.Status==Models.ViewModels.Status.Realizacja)
                 {
-					var _reservation = _repository.GetSingle(id);
+					var _reservation = _reservationRepository.GetSingle(id);
 					_reservation.Status = Models.Models.Status.Wypożyczone;
-                    _repository.Edit(_reservation);
-                    _repository.Save();
+                    _reservationRepository.Edit(_reservation);
+                    _reservationRepository.Save();
 				}
 				if (reservation.Status == Models.ViewModels.Status.Wypożyczone)
 				{
-					var _reservation = _repository.GetSingle(id);
+					var _reservation = _reservationRepository.GetSingle(id);
 					_reservation.Status = Models.Models.Status.Zwrócone;
-					_repository.Edit(_reservation);
-					_repository.Save();
+					_reservationRepository.Edit(_reservation);
+					_reservationRepository.Save();
+					var vehicle = _vehicleRepository.GetSingle((Guid)reservation.VehicleId);
+					vehicle.Availability = true;
+					_vehicleRepository.Edit(vehicle);
+					_vehicleRepository.Save();
 				}
 				return RedirectToAction(nameof(Index));
             }

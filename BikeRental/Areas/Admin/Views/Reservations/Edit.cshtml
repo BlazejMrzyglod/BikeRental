@@ -59,11 +59,13 @@
 		@if (Model.Status == BikeRental.Models.ViewModels.Status.Realizacja)
 		{
 			<input type="hidden" asp-for="Status" class="form-control" />
+			<input type="hidden" asp-for="VehicleId" class="form-control" />
 			<input type="submit" value="Wypożycz" class="btn btn-primary" />
 		}
 		@if (Model.Status == BikeRental.Models.ViewModels.Status.Wypożyczone)
 		{
 			<input type="hidden" asp-for="Status" class="form-control" />
+			<input type="hidden" asp-for="VehicleId" class="form-control" />
 			<input type="submit" value="Zwróć" class="btn btn-primary" />
 		}
 	</form>
