@@ -13,12 +13,14 @@ namespace BikeRental.Areas.Users.Controllers
     [Authorize]
     public class ReservationsController : Controller
 	{
-        private readonly IRepositoryService<Models.Models.Reservation> _repository;
+        private readonly IRepositoryService<Models.Models.Reservation> _reservationRepository;
+        private readonly IRepositoryService<Models.Models.Vehicle> _vehicleRepository;
         private readonly IMapper _mapper;
 
         public ReservationsController(ApplicationDbContext context, IMapper mapper)
         {
-            _repository = new RepositoryService<Models.Models.Reservation>(context);
+            _reservationRepository = new RepositoryService<Models.Models.Reservation>(context);
+            _vehicleRepository = new RepositoryService<Models.Models.Vehicle>(context);
             _mapper = mapper;
         }
         public ActionResult Index()
@@ -42,8 +44,12 @@ namespace BikeRental.Areas.Users.Controllers
                 reservation.ReservationDate = DateTime.Now;
                 reservation.Status = Status.Realizacja;
                 reservation.VehicleId = id;
-                _repository.Add(_mapper.Map<Models.Models.Reservation>(reservation));
-                _repository.Save();
+                _reservationRepository.Add(_mapper.Map<Models.Models.Reservation>(reservation));
+                _reservationRepository.Save();
+                var vehicle = _vehicleRepository.GetSingle(id);
+                vehicle.Availability = false;
+                _vehicleRepository.Edit(vehicle);
+                _vehicleRepository.Save();
                 return RedirectToAction(nameof(Index));
             }
             return View(reservation);
