@@ -29,6 +29,7 @@
   <ItemGroup>
     <ProjectReference Include="..\BikeRental.Models\BikeRental.Models.csproj" />
     <ProjectReference Include="..\BikeRental.Services\BikeRental.Services.csproj" />
+    <ProjectReference Include="..\BikeRental.Tests\BikeRental.Tests.csproj" />
   </ItemGroup>
 
   <ItemGroup>
