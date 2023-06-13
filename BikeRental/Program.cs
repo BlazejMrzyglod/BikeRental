@@ -7,6 +7,7 @@ using BikeRental.Models.MapperProfiles;
 using BikeRental.Validation;
 using BikeRental.Models.Models;
 using BikeRental.Services.Data;
+using System;
 using FluentValidation;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,7 +32,7 @@ builder.Services.AddAutoMapper(typeof(VehiclesProfile), typeof(LocationsProfile)
 
 builder.Services.AddMvc();
 
-builder.Services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters().AddValidatorsFromAssemblyContaining<ReservationValidator>();
+builder.Services.AddFluentValidationAutoValidation().AddValidatorsFromAssemblyContaining<ReservationValidator>();
 
 
 var app = builder.Build();

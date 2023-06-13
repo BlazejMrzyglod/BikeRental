@@ -1,13 +1,13 @@
-﻿using BikeRental.Models.Models;
+﻿using BikeRental.Models.ViewModels;
 using FluentValidation;
 
 namespace BikeRental.Validation
 {
-    public class ReservationValidator : AbstractValidator<Reservation>
+    public class ReservationValidator : AbstractValidator<ReservationViewModel>
     {
         public ReservationValidator() 
         {
-            RuleFor(x => x.ReservationDate).GreaterThanOrEqualTo(DateTime.UtcNow);
+            RuleFor(x => x.StartDate).GreaterThanOrEqualTo(DateTime.Now);
             RuleFor(x => x.StartDate).GreaterThanOrEqualTo(x => x.ReservationDate).LessThan(x => x.EndDate);
         }
     }
