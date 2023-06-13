@@ -60,14 +60,14 @@
 		{
 			<input type="hidden" asp-for="Status" class="form-control" />
 			<input type="hidden" asp-for="VehicleId" class="form-control" />
-			<input type="submit" value="Wypożycz" class="btn btn-primary" />
+			<input id="change" type="submit" name="rent" value="Wypożycz" class="btn btn-primary" />
 		}
 		@if (Model.Status == BikeRental.Models.ViewModels.Status.Wypożyczone)
 		{
 			<input type="hidden" asp-for="Status" class="form-control" />
 			<input type="hidden" asp-for="VehicleId" class="form-control" />
-			<input type="submit" value="Zwróć" class="btn btn-primary" />
+			<input id="change" type="submit" name="return" value="Zwróć" class="btn btn-primary" />
 		}
 	</form>
-	<a asp-action="Index">Wróc do listy</a>
+	<a asp-action="Index">Wróć do listy</a>
 </div>
