@@ -67,6 +67,7 @@ namespace BikeRental.Tests
             endDate.SendKeys("30102023");
             endDate.SendKeys(Keys.Tab);
             endDate.SendKeys("1000AM");
+            driver.FindElement(By.Id("create")).Click();
             Assert.Equal("Stwórz rezerwacje - ATH Bike Rental System", driver.Title);
             startDate = driver.FindElement(By.Id("StartDate"));
             startDate.SendKeys("25102023");
@@ -76,6 +77,7 @@ namespace BikeRental.Tests
             endDate.SendKeys("24102023");
             endDate.SendKeys(Keys.Tab);
             endDate.SendKeys("1000AM");
+            driver.FindElement(By.Id("create")).Click();
             Assert.Equal("Stwórz rezerwacje - ATH Bike Rental System", driver.Title);
             driver.Quit();
         }
