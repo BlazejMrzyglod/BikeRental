@@ -23,6 +23,7 @@
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
             <input type="hidden" asp-for="User" value=@User.Identity?.Name />
+            <input type="hidden" asp-for="ReservationDate" value=@DateTime.Now />
             <div class="form-group">
                 <input id="create" type="submit" value="Create" class="btn btn-primary" />
             </div>

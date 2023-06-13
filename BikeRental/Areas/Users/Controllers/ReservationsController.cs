@@ -36,7 +36,7 @@ namespace BikeRental.Areas.Users.Controllers
         // POST: ReservationsController/Create/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public  ActionResult Create(Guid id, [Bind("StartDate,EndDate,User")] ReservationViewModel reservation)
+        public  ActionResult Create(Guid id, [Bind("StartDate,EndDate,ReservationDate,User")] ReservationViewModel reservation)
         {
             if (ModelState.IsValid)
             {
@@ -44,7 +44,6 @@ namespace BikeRental.Areas.Users.Controllers
                 if (vehicle.Availability)
                 {
                     reservation.Id = Guid.NewGuid();
-                    reservation.ReservationDate = DateTime.Now;
                     reservation.Status = Status.Realizacja;
                     reservation.VehicleId = id;
                     _reservationRepository.Add(_mapper.Map<Models.Models.Reservation>(reservation));
